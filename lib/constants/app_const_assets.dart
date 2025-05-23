@@ -1,0 +1,12 @@
+class AppAssets {
+  // SVG
+  static const String complaince = "assets/images/complaince.svg";
+
+  //JPG
+  static const String introImage1 = "assets/images/intro_image1.png";
+  static const String introImage2 = "assets/images/intro_image2.png";
+  static const String introImage3 = "assets/images/intro_image3.png";
+  static const String introImage4 = "assets/images/intro_image4.png";
+
+
+}
