@@ -12,7 +12,7 @@ class IntroController extends GetxController {
     if (currentPage.value < 2) {
       pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else {
-      // Get.toNamed(AppRoutes.login);
+      Get.toNamed(AppRoutes.login);
     }
   }
 

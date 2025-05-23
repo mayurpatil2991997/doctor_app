@@ -37,7 +37,7 @@ class ButtonWidget extends StatelessWidget {
         width: width ?? 85.w,
         decoration: BoxDecoration(
           color: bColor ?? AppColor.primaryColor,
-          borderRadius: BorderRadius.circular(borderRadius ?? 25),
+          borderRadius: BorderRadius.circular(borderRadius ?? 6),
           border: Border.all(color: borderColor ?? Colors.transparent),
           boxShadow: showShadow
               ? <BoxShadow>[
