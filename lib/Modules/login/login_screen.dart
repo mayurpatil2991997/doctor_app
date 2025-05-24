@@ -18,8 +18,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final LoginController loginController = Get.put(LoginController());
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -39,16 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  Image.asset(
-                    AppAssets.doctor,
-                    fit: BoxFit.fill,
-                    width: double.infinity,
-                  ),
-                ],
+              Container(
+                color: AppColor.bgColor,
+                child: Image.asset(
+                  AppAssets.doctor,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
               Container(
+                height: 50.h,
                 padding: const EdgeInsets.all(18.0),
                 decoration: const BoxDecoration(
                   color: AppColor.whiteColor,
@@ -58,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         "Login",
@@ -74,92 +73,73 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 14,
                         ),
                       ),
-                      SizedBox(height: 3.h),
+                      SizedBox(height: 2.h),
                       CustomTextField(
-                        hintText: 'Email or Username',
-                        controller: loginController.emailController,
-                        keyboardType: null,
-                        focusNode: emailFocusNode,
+                        hintText: 'Email Phone Number',
+                        controller: loginController.phoneController,
+                        keyboardType: TextInputType.number,
+                        maxLength: 10,
+                        focusNode: loginController.phoneFocusNode,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Email or Username";
+                            return 'Please enter mobile number';
                           }
-                          final isEmail = RegExp(r"...").hasMatch(value); // use your regex
-                          final isUsername = value.length >= 1;
-                          if (!isEmail && !isUsername) {
-                            return "Enter a valid Email or Username";
+                          if (value.length != 10 ||
+                              !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                            return 'Enter valid 10-digit number';
                           }
                           return null;
                         },
-                      ),
-                      SizedBox(height: 1.5.h),
-                      Obx(() => CustomTextField(
-                        hintText: 'Password',
-                        controller: loginController.passwordController,
-                        keyboardType: null,
-                        focusNode: passwordFocusNode,
-                        obscureText: !loginController.isPasswordVisible.value,
-                        suFixIcon: InkWell(
-                          onTap: () {
-                            loginController.togglePasswordVisibility();
-                            FocusScope.of(context)
-                                .requestFocus(passwordFocusNode);
-                          },
-                          child: Icon(
-                            loginController.isPasswordVisible.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: AppColor.blackColor.withOpacity(0.5),
-                            size: 26,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please Enter Password";
-                          } else {
-                            return FormValidate.validatePassword(
-                                value, "Password should be 8 characters");
-                          }
-                        },
-                      )),
-                      SizedBox(height: 1.h),
-
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                            // Forgot password navigation
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 2.w),
-                            child: Text(
-                              "Forgot Password?",
-                              style: AppTextStyle.mediumText.copyWith(
-                                fontSize: 14,
-                                color: AppColor.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-
-                      Center(
-                        child: ButtonWidget(
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              // loginController.signIn();
-                            }
-                          },
-                          text: "Login",
-                          textStyle: AppTextStyle.mediumText.copyWith(
-                            color: AppColor.whiteColor,
-                            fontSize: 16,
-                          ),
-                        ),
+                        onChanged: (_) => loginController.checkPhoneAndShowOtp(),
                       ),
                       SizedBox(height: 2.h),
-
+                      Obx(() => loginController.showOtp.value
+                          ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Enter OTP sent to your number"),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            hintText: "Enter 6-digit OTP",
+                            controller: loginController.otpController,
+                            keyboardType: TextInputType.number,
+                            focusNode: loginController.otpFocusNode,
+                            maxLength: 6,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter OTP';
+                              }
+                              if (value.length != 6) {
+                                return 'OTP must be 6 digits';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      )
+                          : SizedBox()),
+                      SizedBox(height: 2.h),
+                      Obx(() {
+                        final isOtpEntered = loginController.otpController.text.length == 6;
+                        return loginController.showOtp.value && isOtpEntered
+                            ? Center(
+                          child: ButtonWidget(
+                            onTap: () {
+                              if (formKey.currentState!.validate()) {
+                                // loginController.signIn();
+                              }
+                            },
+                            text: "Login",
+                            textStyle: AppTextStyle.mediumText.copyWith(
+                              color: AppColor.whiteColor,
+                              fontSize: 16,
+                            ),
+                          ),
+                        )
+                            : SizedBox();
+                      }),
+                      SizedBox(height: 1.5.h),
                       Center(
                         child: InkWell(
                           onTap: () {},
@@ -183,7 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 2.h),
                     ],
                   ),
                 ),

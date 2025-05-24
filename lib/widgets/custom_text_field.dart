@@ -97,7 +97,7 @@ class CustomTextField extends StatelessWidget {
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,
         onFieldSubmitted: onSubmitted,
-        focusNode: FocusNode(),
+        focusNode: focusNode,
         obscureText: obscureText,
         textInputAction: textInputAction,
         cursorColor: AppColor.primaryColor,
