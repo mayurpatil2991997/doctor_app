@@ -1,6 +1,8 @@
 import 'package:doctor_app/Modules/intro/intro_screen.dart';
 import 'package:get/get.dart';
 
+import '../Modules/home/home_binding.dart';
+import '../Modules/home/home_screen.dart';
 import '../Modules/intro/intro_binding.dart';
 import '../Modules/login/login_binding.dart';
 import '../Modules/login/login_screen.dart';
@@ -24,6 +26,11 @@ class AppPages {
       name: AppRoutes.register,
       page: () => RegisterScreen(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.home,
+      page: () => HomeScreen(),
+      binding: HomeBinding(),
     ),
   ];
 }

@@ -1,6 +1,6 @@
 class AppAssets {
   // SVG
-  static const String complaince = "assets/images/complaince.svg";
+  static const String notification = "assets/images/notification.svg";
 
   //JPG
   static const String introImage1 = "assets/images/intro_image1.png";
@@ -8,6 +8,7 @@ class AppAssets {
   static const String introImage3 = "assets/images/intro_image3.png";
   static const String introImage4 = "assets/images/intro_image4.png";
   static const String doctor = "assets/images/doctor.png";
+  static const String doctorAppointment = "assets/images/doctorAppointment.png";
   static const String doctor1 = "assets/images/doctor1.jpg";
 
 }

@@ -300,9 +300,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Center(
                         child: ButtonWidget(
                           onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              // loginController.signIn();
-                            }
+                            Get.toNamed(AppRoutes.home);
+                            // if (formKey.currentState!.validate()) {
+                            //   loginController.signIn();
+                            // }
                           },
                           text: "Register",
                           textStyle: AppTextStyle.mediumText.copyWith(
