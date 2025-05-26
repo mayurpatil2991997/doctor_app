@@ -1,3 +1,4 @@
+import 'package:doctor_app/Routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColor.bgColor,
       resizeToAvoidBottomInset: true,
@@ -46,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Container(
-                height: 50.h,
+                height: screenHeight,
                 padding: const EdgeInsets.all(18.0),
                 decoration: const BoxDecoration(
                   color: AppColor.whiteColor,
@@ -55,94 +57,100 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Form(
                   key: formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "Login",
-                        style: AppTextStyle.boldText.copyWith(
-                          color: AppColor.blackColor,
-                          fontSize: 24,
-                        ),
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        "Your health journey starts here.",
-                        style: AppTextStyle.mediumText.copyWith(
-                          color: AppColor.blackColor,
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(height: 2.h),
-                      CustomTextField(
-                        hintText: 'Email Phone Number',
-                        controller: loginController.phoneController,
-                        keyboardType: TextInputType.number,
-                        maxLength: 10,
-                        focusNode: loginController.phoneFocusNode,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter mobile number';
-                          }
-                          if (value.length != 10 ||
-                              !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                            return 'Enter valid 10-digit number';
-                          }
-                          return null;
-                        },
-                        onChanged: (_) => loginController.checkPhoneAndShowOtp(),
-                      ),
-                      SizedBox(height: 2.h),
-                      Obx(() => loginController.showOtp.value
-                          ? Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("Enter OTP sent to your number"),
-                          const SizedBox(height: 10),
+                          Text(
+                            "Login",
+                            style: AppTextStyle.boldText.copyWith(
+                              color: AppColor.blackColor,
+                              fontSize: 24,
+                            ),
+                          ),
+                          SizedBox(height: 1.h),
+                          Text(
+                            "Your health journey starts here.",
+                            style: AppTextStyle.mediumText.copyWith(
+                              color: AppColor.blackColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(height: 2.h),
                           CustomTextField(
-                            hintText: "Enter 6-digit OTP",
-                            controller: loginController.otpController,
+                            hintText: 'Email Phone Number',
+                            controller: loginController.phoneController,
                             keyboardType: TextInputType.number,
-                            focusNode: loginController.otpFocusNode,
-                            maxLength: 6,
+                            maxLength: 10,
+                            focusNode: loginController.phoneFocusNode,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter OTP';
+                                return 'Please enter mobile number';
                               }
-                              if (value.length != 6) {
-                                return 'OTP must be 6 digits';
+                              if (value.length != 10 ||
+                                  !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                                return 'Enter valid 10-digit number';
                               }
                               return null;
                             },
+                            onChanged: (_) => loginController.checkPhoneAndShowOtp(),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 2.h),
+                          Obx(() => loginController.showOtp.value
+                              ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Enter OTP sent to your number"),
+                              const SizedBox(height: 10),
+                              CustomTextField(
+                                hintText: "Enter 6-digit OTP",
+                                controller: loginController.otpController,
+                                keyboardType: TextInputType.number,
+                                focusNode: loginController.otpFocusNode,
+                                maxLength: 6,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter OTP';
+                                  }
+                                  if (value.length != 6) {
+                                    return 'OTP must be 6 digits';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          )
+                              : SizedBox()),
+                          SizedBox(height: 2.h),
+                          Obx(() {
+                            final isOtpEntered = loginController.otpController.text.length == 6;
+                            return loginController.showOtp.value && isOtpEntered
+                                ? Center(
+                              child: ButtonWidget(
+                                onTap: () {
+                                  if (formKey.currentState!.validate()) {
+                                    // loginController.signIn();
+                                  }
+                                },
+                                text: "Login",
+                                textStyle: AppTextStyle.mediumText.copyWith(
+                                  color: AppColor.whiteColor,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            )
+                                : SizedBox();
+                          }),
+
                         ],
-                      )
-                          : SizedBox()),
-                      SizedBox(height: 2.h),
-                      Obx(() {
-                        final isOtpEntered = loginController.otpController.text.length == 6;
-                        return loginController.showOtp.value && isOtpEntered
-                            ? Center(
-                          child: ButtonWidget(
-                            onTap: () {
-                              if (formKey.currentState!.validate()) {
-                                // loginController.signIn();
-                              }
-                            },
-                            text: "Login",
-                            textStyle: AppTextStyle.mediumText.copyWith(
-                              color: AppColor.whiteColor,
-                              fontSize: 16,
-                            ),
-                          ),
-                        )
-                            : SizedBox();
-                      }),
-                      SizedBox(height: 1.5.h),
+                      ),
                       Center(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(AppRoutes.register);
+                          },
                           child: Text.rich(
                             TextSpan(
                               text: "Don't have an account? ",

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import '../Modules/intro/intro_binding.dart';
 import '../Modules/login/login_binding.dart';
 import '../Modules/login/login_screen.dart';
+import '../Modules/register/register_binding.dart';
+import '../Modules/register/register_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -17,6 +19,11 @@ class AppPages {
       name: AppRoutes.login,
       page: () => LoginScreen(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.register,
+      page: () => RegisterScreen(),
+      binding: RegisterBinding(),
     ),
   ];
 }
