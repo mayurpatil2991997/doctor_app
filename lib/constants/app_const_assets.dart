@@ -1,6 +1,7 @@
 class AppAssets {
   // SVG
   static const String notification = "assets/images/notification.svg";
+  static const String heart = "assets/images/heart.svg";
 
   //JPG
   static const String introImage1 = "assets/images/intro_image1.png";
