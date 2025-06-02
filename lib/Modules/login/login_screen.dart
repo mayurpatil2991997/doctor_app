@@ -97,52 +97,59 @@ class _LoginScreenState extends State<LoginScreen> {
                             onChanged: (_) => loginController.checkPhoneAndShowOtp(),
                           ),
                           SizedBox(height: 2.h),
-                          Obx(() => loginController.showOtp.value
+                          Obx(() => loginController.showSendOtpButton.value
+                              ? Center(
+                            child: ButtonWidget(
+                              onTap: () {
+                                loginController.sendOtp();
+                              },
+                              width: 30.w,
+                              text: "Send Otp",
+                              textStyle: AppTextStyle.mediumText.copyWith(
+                                color: AppColor.whiteColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
+                              : SizedBox()),
+                          SizedBox(height: 2.h),
+                          Obx(() => loginController.showOtpField.value
                               ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Enter OTP sent to your number"),
-                              const SizedBox(height: 10),
+                              SizedBox(height: 10),
                               CustomTextField(
                                 hintText: "Enter 6-digit OTP",
                                 controller: loginController.otpController,
                                 keyboardType: TextInputType.number,
                                 focusNode: loginController.otpFocusNode,
                                 maxLength: 6,
+                                onChanged: loginController.checkOtpLength,
                                 validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter OTP';
-                                  }
-                                  if (value.length != 6) {
-                                    return 'OTP must be 6 digits';
-                                  }
+                                  if (value == null || value.isEmpty) return 'Please enter OTP';
+                                  if (value.length != 6) return 'OTP must be 6 digits';
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 20),
                             ],
                           )
                               : SizedBox()),
                           SizedBox(height: 2.h),
-                          Obx(() {
-                            final isOtpEntered = loginController.otpController.text.length == 6;
-                            return loginController.showOtp.value && isOtpEntered
-                                ? Center(
-                              child: ButtonWidget(
-                                onTap: () {
-                                  // if (formKey.currentState!.validate()) {
-                                  //   // loginController.signIn();
-                                  // }
-                                },
-                                text: "Login",
-                                textStyle: AppTextStyle.mediumText.copyWith(
-                                  color: AppColor.whiteColor,
-                                  fontSize: 16,
-                                ),
+                          Obx(() => loginController.showLoginButton.value
+                              ? Center(
+                            child: ButtonWidget(
+                              onTap: () {
+                                // loginController.signIn();
+                              },
+                              text: "Login",
+                              textStyle: AppTextStyle.mediumText.copyWith(
+                                color: AppColor.whiteColor,
+                                fontSize: 16,
                               ),
-                            )
-                                : SizedBox();
-                          }),
+                            ),
+                          )
+                              : SizedBox()),
 
                         ],
                       ),

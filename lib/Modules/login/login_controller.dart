@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../APIHelper/api_status.dart';
+import '../../APIHelper/repository.dart';
 import '../../Routes/app_routes.dart';
+import '../../Utils/helper_method.dart';
 
 class LoginController extends GetxController {
   final phoneController = TextEditingController();
@@ -8,49 +11,34 @@ class LoginController extends GetxController {
 
   final phoneFocusNode = FocusNode();
   final otpFocusNode = FocusNode();
-  RxBool showOtp = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    phoneController.addListener(() {
-      if (phoneController.text.length == 10) {
-        showOtp.value = true;
-      } else {
-        showOtp.value = false;
-      }
-    });
-
-    otpController.addListener(() {
-      showOtp.refresh();
-    });
-  }
-
-  @override
-  void onClose() {
-    phoneController.dispose();
-    otpController.dispose();
-    phoneFocusNode.dispose();
-    otpFocusNode.dispose();
-    super.onClose();
-  }
+  final showSendOtpButton = false.obs;
+  final showOtpField = false.obs;
+  final showLoginButton = false.obs;
 
   void checkPhoneAndShowOtp() {
-    final phone = phoneController.text;
-    if (phone.length == 10 && RegExp(r'^\d{10}$').hasMatch(phone)) {
-      showOtp.value = true;
-      phoneFocusNode.unfocus();
-      Future.delayed(Duration(milliseconds: 300), () {
-        FocusScope.of(Get.context!).requestFocus(otpFocusNode);
-      });
-    } else {
-      showOtp.value = false;
-      otpFocusNode.unfocus();
+    final number = phoneController.text;
+    showSendOtpButton.value = number.length == 10 && RegExp(r'^[0-9]{10}$').hasMatch(number);
+  }
+
+  Future<void> sendOtp() async {
+    showLoader();
+
+    final response = await Repository.instance.sendOtpApi(
+      number: phoneController.text,
+    );
+
+    hideLoader(hideOverlay: false);
+
+    if (response is Success) {
+      showOtpField.value = true;
+    } else if (response is Failure) {
+      showSnackBarError(message: response.errorResponse.toString());
     }
   }
 
-  void sendOtp() {
-    Get.snackbar("OTP", "OTP sent to ${phoneController.text}");
+  void checkOtpLength(String value) {
+    showLoginButton.value = value.length == 6;
   }
-
 }
+

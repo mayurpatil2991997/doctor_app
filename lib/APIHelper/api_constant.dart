@@ -49,6 +49,7 @@ class APIConstant {
     }
   }
 
-  static String baseUrl = "";
-  static String signIn = "$baseUrl/login";
+  static String baseUrl = "http://192.168.1.3:8082/api";
+  static String register = "$baseUrl/register/patient";
+  static String sendOtp = "$baseUrl/auth/otp/initiate";
 }

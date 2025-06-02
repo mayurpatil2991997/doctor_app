@@ -25,79 +25,50 @@ class Repository {
     ),
   );
 
-  Future<APIStatus> postAPICallProfile({
-    required Object param,
-    required String url,
-    Map<String, dynamic>? headers,
-    bool isMultipart = false,
+
+  Future<APIStatus> registerApi({
+    required String fName,
+    required String lName,
+    required String email,
+    required String dateOfBirth,
+    required String gender,
+    required String contact,
   }) async {
-    try {
-      headers ??= {'Accept': 'application/json'};
-
-      if (!isMultipart) {
-        headers['Content-Type'] = 'application/json';
-      }
-
-      print('Calling API: $url');
-      print('Headers: $headers');
-      print('Is Multipart: $isMultipart');
-
-      final response = await dio.Dio().post(
-        url,
-        data: isMultipart ? param : jsonEncode(param),
-        options: dio.Options(headers: headers),
-      );
-
-      print("Response status: ${response.statusCode}");
-      print("Response data: ${response.data}");
-
-      if (response.statusCode == 200) {
-        return SuccessProfile(code: response.statusCode, response: response.data);
-      } else {
-        return Failure(code: response.statusCode, errorResponse: 'Error: ${response.statusCode}');
-      }
-    } on dio.DioError catch (e) {
-      print('Dio Error occurred: ${e.message}');
-      if (e.response != null) {
-        print('Dio Response Error: ${e.response!.data}');
-      }
-
-      String errorMessage = 'Request failed';
-      if (e.response?.data is Map && e.response!.data['message'] != null) {
-        errorMessage = e.response!.data['message'];
-      } else if (e.response?.data is String) {
-        errorMessage = e.response!.data;
-      }
-
-      return Failure(
-        code: e.response?.statusCode ?? 0,
-        errorResponse: errorMessage,
-      );
-    } catch (e) {
-      print('Unknown Error: $e');
-      return Failure(code: 0, errorResponse: 'Unexpected error: $e');
-    }
+    var params = {
+      "firstName": fName,
+      "lastName": lName,
+      "email": email,
+      "dateOfBirth": dateOfBirth,
+      "gender": gender,
+      "contact": contact,
+    };
+    var response = await APIServices.instance.postAPICall(
+      param: params,
+      url: APIConstant.register,
+    );
+    print("hbdsfbdfb $params");
+    return response;
   }
 
+  Future<APIStatus> sendOtpApi({
+    required String number,
+  }) async {
+    var params = {
+      "mobileNumber": number
+    };
+    var response = await APIServices.instance.postAPICall(
+      param: params,
+      url: "${APIConstant.sendOtp}?mobileNumber=$number",
+    );
+    return response;
+  }
 
-  // Future<APIStatus> signInApi({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   var params = {"email": email, "password": password};
-  //   var response = await APIServices.instance.postAPICall(
-  //     param: params,
-  //     url: APIConstant.signIn,
-  //   );
-  //   return response;
-  // }
-  //
-  // Future<APIStatus> companySettingsApi() async {
-  //   var response = await APIServices.instance.getAPICall(
-  //     url: APIConstant.companySettings,
-  //   );
-  //   return response;
-  // }
-  //
+// Future<APIStatus> companySettingsApi() async {
+//   var response = await APIServices.instance.getAPICall(
+//     url: APIConstant.companySettings,
+//   );
+//   return response;
+// }
+//
 
 }
