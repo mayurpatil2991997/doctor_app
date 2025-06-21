@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? Center(
                             child: ButtonWidget(
                               onTap: () {
-                                // loginController.signIn();
+                                loginController.login();
                               },
                               text: "Login",
                               textStyle: AppTextStyle.mediumText.copyWith(

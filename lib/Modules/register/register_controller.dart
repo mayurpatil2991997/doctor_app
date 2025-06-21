@@ -74,7 +74,7 @@ class RegisterController extends GetxController {
     hideLoader(hideOverlay: false);
     if (response is Success) {
       var result = registerModelFromJson(response.response.toString());
-      Get.toNamed(AppRoutes.home);
+      Get.toNamed(AppRoutes.login);
     } else if (response is Failure) {
       print("RegisterError ${response.errorResponse.toString()}");
       showSnackBarError(message: response.errorResponse.toString());

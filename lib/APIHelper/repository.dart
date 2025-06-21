@@ -45,6 +45,9 @@ class Repository {
     var response = await APIServices.instance.postAPICall(
       param: params,
       url: APIConstant.register,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     );
     print("hbdsfbdfb $params");
     return response;
@@ -59,6 +62,21 @@ class Repository {
     var response = await APIServices.instance.postAPICall(
       param: params,
       url: "${APIConstant.sendOtp}?mobileNumber=$number",
+    );
+    return response;
+  }
+
+  Future<APIStatus> loginApi({
+    required String number,
+    required String otp,
+  }) async {
+    var params = {
+      "mobileNumber": number,
+      "otp": otp,
+    };
+    var response = await APIServices.instance.postAPICall(
+      param: params,
+      url: APIConstant.login,
     );
     return response;
   }
