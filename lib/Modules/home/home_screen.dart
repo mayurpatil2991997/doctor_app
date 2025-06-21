@@ -1,17 +1,13 @@
-import 'package:doctor_app/Routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import '../../Themes/app_colors_theme.dart';
 import '../../Themes/app_text_theme.dart';
-import '../../Utils/app_validator.dart';
+import '../../Utils/helper_method.dart';
 import '../../constants/app_const_assets.dart';
-import '../../widgets/button_widget.dart';
-import '../../widgets/custom_text_field.dart';
-import '../intro/intro_controller.dart';
 import 'home_controller.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final HomeController homeController = Get.put(HomeController());
   final formKey = GlobalKey<FormState>();
+  DateTime? _lastBackPressed;
 
   List<Map<String, dynamic>> appointmentData = [
     {
@@ -85,35 +82,51 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.bgColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(15.h),
-        child: SafeArea(
-          child: header(), // Your custom header
+    return WillPopScope(
+      onWillPop: () async {
+        final now = DateTime.now();
+        if (_lastBackPressed == null ||
+            now.difference(_lastBackPressed!) > const Duration(seconds: 2)) {
+          _lastBackPressed = now;
+          showSnackBarSuccess(
+            message: 'Press again to exit'
+          );
+          SystemNavigator.pop();
+
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.bgColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(15.h),
+          child: SafeArea(
+            child: header(),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 2.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: Column(children: [upcomingAppointment()]),
-            ),
-            SizedBox(height: 2.h),
-            appointmentOptions(),
-            SizedBox(height: 2.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: specializationWidget(),
-            ),
-            SizedBox(height: 1.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: popularDoctorWidget(),
-            ),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 2.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Column(children: [upcomingAppointment()]),
+              ),
+              SizedBox(height: 2.h),
+              appointmentOptions(),
+              SizedBox(height: 2.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: specializationWidget(),
+              ),
+              SizedBox(height: 1.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: popularDoctorWidget(),
+              ),
+            ],
+          ),
         ),
       ),
     );
