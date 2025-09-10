@@ -55,7 +55,7 @@ class LoginController extends GetxController {
     if (response is Success) {
       var result = loginModelFromJson(response.response.toString());
       showSnackBarSuccess(message: result.message.toString());
-      Get.toNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.mainNavigation);
     } else if (response is Failure) {
       showSnackBarError(message: response.errorResponse.toString());
     }

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:dio/dio.dart';
 import 'Routes/app_pages.dart';
 import 'Routes/app_routes.dart';
-import 'Utils/local_storage.dart';
-import 'Utils/session.dart';
+import 'Themes/app_colors_theme.dart';
 
 
 void main() async {
@@ -33,16 +30,39 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
           title: 'Doctor App',
           theme: ThemeData(
             fontFamily: 'Poppins',
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primaryColor),
             useMaterial3: true,
+            brightness: Brightness.light,
+            scaffoldBackgroundColor: AppColor.whiteColor,
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColor.whiteColor,
+              foregroundColor: AppColor.blackColor,
+              elevation: 0,
+            ),
           ),
+          darkTheme: ThemeData(
+            fontFamily: 'Poppins',
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColor.primaryColor,
+              brightness: Brightness.dark,
+            ),
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: Color(0xFF121212),
+            appBarTheme: AppBarTheme(
+              backgroundColor: Color(0xFF1E1E1E),
+              foregroundColor: Colors.white,
+              elevation: 0,
+            ),
+          ),
+          themeMode: ThemeMode.system,
           builder: (context, child) {
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
               child: child!,
             );
           },
-          initialRoute: AppRoutes.intro,
+          initialRoute: AppRoutes.mainNavigation,
           getPages: AppPages.pages,
         );
       },

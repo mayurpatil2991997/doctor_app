@@ -49,7 +49,7 @@ class APIConstant {
     }
   }
 
-  static String baseUrl = "http://192.168.1.49:8080/api";
+  static String baseUrl = "http://api.doctech.solutions/api";
   static String register = "$baseUrl/register/patient";
   static String sendOtp = "$baseUrl/auth/otp/initiate";
   static String login = "$baseUrl/auth/login";

@@ -7,6 +7,7 @@ import '../../Themes/app_colors_theme.dart';
 import '../../Themes/app_text_theme.dart';
 import '../../Utils/helper_method.dart';
 import '../../constants/app_const_assets.dart';
+import '../main_navigation/main_navigation_controller.dart';
 import 'home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -82,51 +83,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final now = DateTime.now();
-        if (_lastBackPressed == null ||
-            now.difference(_lastBackPressed!) > const Duration(seconds: 2)) {
-          _lastBackPressed = now;
-          showSnackBarSuccess(
-            message: 'Press again to exit'
-          );
-          SystemNavigator.pop();
-
-          return false;
-        }
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: AppColor.bgColor,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(15.h),
-          child: SafeArea(
-            child: header(),
-          ),
+    return Scaffold(
+      backgroundColor: AppColor.bgColor,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(15.h),
+        child: SafeArea(
+          child: header(),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 2.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: Column(children: [upcomingAppointment()]),
-              ),
-              SizedBox(height: 2.h),
-              appointmentOptions(),
-              SizedBox(height: 2.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: specializationWidget(),
-              ),
-              SizedBox(height: 1.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
-                child: popularDoctorWidget(),
-              ),
-            ],
-          ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 2.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              child: Column(children: [upcomingAppointment()]),
+            ),
+            SizedBox(height: 2.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              child: specializationWidget(),
+            ),
+            SizedBox(height: 1.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              child: popularDoctorWidget(),
+            ),
+            SizedBox(height: 10.h), // Add bottom padding for navigation bar
+          ],
         ),
       ),
     );
@@ -286,89 +270,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget appointmentOptions() {
-    return SizedBox(
-      height: 28.h,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: appointmentData.length,
-        itemBuilder: (context, index) {
-          final data = appointmentData[index];
-          return SizedBox(
-            width: 180,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 20.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage(data['image'] ?? ''),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 16,
-                      right: 18,
-                      child: CircleAvatar(
-                        radius: 14,
-                        backgroundColor: Colors.tealAccent.shade100,
-                        child: Icon(
-                          data['icon'],
-                          size: 16,
-                          color: AppColor.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 3.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data['title'],
-                        style: AppTextStyle.boldText.copyWith(
-                          fontSize: 16,
-                          color: AppColor.blackColor,
-                        ),
-                      ),
-                      SizedBox(height: 0.5.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              data['subtitle'],
-                              style: AppTextStyle.boldText.copyWith(
-                                fontSize: 12,
-                                color: AppColor.blackColor.withOpacity(0.5),
-                              ),
-                            ),
-                          ),
-                          Icon(
-                            Icons.arrow_forward,
-                            size: 16,
-                            color: AppColor.greyColor,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   Widget popularDoctorWidget() {
     return Column(
       children: [
@@ -384,11 +285,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 18,
                 ),
               ),
-              Text(
-                "See all",
-                style: AppTextStyle.boldText.copyWith(
-                  color: AppColor.primaryColor,
-                  fontSize: 14,
+              GestureDetector(
+                onTap: () {
+                    Get.toNamed('/doctors');
+                },
+                child: Text(
+                  "See all",
+                  style: AppTextStyle.boldText.copyWith(
+                    color: AppColor.primaryColor,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ],
@@ -535,11 +441,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 18,
                 ),
               ),
-              Text(
-                "See all",
-                style: AppTextStyle.boldText.copyWith(
-                  color: AppColor.primaryColor,
-                  fontSize: 14,
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed('/medicines');
+                },
+                child: Text(
+                  "See all",
+                  style: AppTextStyle.boldText.copyWith(
+                    color: AppColor.primaryColor,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ],
