@@ -157,8 +157,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(height: 2.h),
                         Obx(() => DropdownButtonFormField<String>(
+                          style: AppTextStyle.mediumText.copyWith(
+                            color: AppColor.blackColor,
+                          ),
+                          dropdownColor: AppColor.whiteColor,
                           decoration: InputDecoration(
                             labelText: 'Gender',
+                            labelStyle: AppTextStyle.mediumText.copyWith(
+                                color: AppColor.blackColor.withOpacity(0.9),
+                                fontSize: 14
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -190,7 +198,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           items: registerController.genderOptions.map((String gender) {
                             return DropdownMenuItem<String>(
                               value: gender,
-                              child: Text(gender),
+                              child: Text(
+                                gender,
+                                style: AppTextStyle.mediumText.copyWith(
+                                  color: AppColor.blackColor,
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -252,8 +265,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(height: 2.h),
                         Obx(() => DropdownButtonFormField<String>(
+                          style: AppTextStyle.mediumText.copyWith(
+                            color: AppColor.blackColor,
+                          ),
+                          dropdownColor: AppColor.whiteColor,
                           decoration: InputDecoration(
                             labelText: 'Blood Group',
+                            labelStyle: AppTextStyle.mediumText.copyWith(
+                                color: AppColor.blackColor.withOpacity(0.9),
+                                fontSize: 14
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -285,7 +306,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           items: registerController.bloodGroupOptions.map((String gender) {
                             return DropdownMenuItem<String>(
                               value: gender,
-                              child: Text(gender),
+                              child: Text(
+                                gender,
+                                style: AppTextStyle.mediumText.copyWith(
+                                  color: AppColor.blackColor,
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {

@@ -81,6 +81,13 @@ class Repository {
     return response;
   }
 
+  Future<APIStatus> doctorsApi() async {
+    var response = await APIServices.instance.getAPICall(
+      url: APIConstant.doctors,
+    );
+    return response;
+  }
+
 // Future<APIStatus> companySettingsApi() async {
 //   var response = await APIServices.instance.getAPICall(
 //     url: APIConstant.companySettings,

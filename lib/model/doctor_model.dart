@@ -4,55 +4,95 @@ DoctorModel doctorModelFromJson(String str) => DoctorModel.fromJson(json.decode(
 String doctorModelToJson(DoctorModel data) => json.encode(data.toJson());
 
 class DoctorModel {
-  int? doctorId;
-  String? name;
-  String? specialization;
-  String? experience;
-  String? image;
-  double? rating;
-  int? consultationFee;
-  bool? isAvailable;
-  String? availabilityStatus;
-  bool? isVideoConsult;
+  List<DoctorDetails>? doctorDetails;
 
-  DoctorModel({
-    this.doctorId,
-    this.name,
-    this.specialization,
-    this.experience,
-    this.image,
-    this.rating,
-    this.consultationFee,
-    this.isAvailable,
-    this.availabilityStatus,
-    this.isVideoConsult,
-  });
+  DoctorModel({this.doctorDetails});
 
   DoctorModel.fromJson(Map<String, dynamic> json) {
-    doctorId = json['doctorId'];
-    name = json['name'];
-    specialization = json['specialization'];
-    experience = json['experience'];
-    image = json['image'];
-    rating = json['rating']?.toDouble();
-    consultationFee = json['consultationFee'];
-    isAvailable = json['isAvailable'];
-    availabilityStatus = json['availabilityStatus'];
-    isVideoConsult = json['isVideoConsult'];
+    if (json['doctorDetails'] != null) {
+      doctorDetails = <DoctorDetails>[];
+      json['doctorDetails'].forEach((v) {
+        doctorDetails!.add(new DoctorDetails.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['doctorId'] = doctorId;
-    data['name'] = name;
-    data['specialization'] = specialization;
-    data['experience'] = experience;
-    data['image'] = image;
-    data['rating'] = rating;
-    data['consultationFee'] = consultationFee;
-    data['isAvailable'] = isAvailable;
-    data['availabilityStatus'] = availabilityStatus;
-    data['isVideoConsult'] = isVideoConsult;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.doctorDetails != null) {
+      data['doctorDetails'] =
+          this.doctorDetails!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
+
+class DoctorDetails {
+  String? registrationNumber;
+  String? firstName;
+  String? lastName;
+  String? specialization;
+  String? contactNumber;
+  String? email;
+  String? password;
+  String? qualifications;
+  List<String>? certifications;
+  String? profileImageUrl;
+  String? doctorStatus;
+  String? createdAt;
+  String? updatedAt;
+  String? createdByHospitalId;
+
+  DoctorDetails(
+      {this.registrationNumber,
+        this.firstName,
+        this.lastName,
+        this.specialization,
+        this.contactNumber,
+        this.email,
+        this.password,
+        this.qualifications,
+        this.certifications,
+        this.profileImageUrl,
+        this.doctorStatus,
+        this.createdAt,
+        this.updatedAt,
+        this.createdByHospitalId});
+
+  DoctorDetails.fromJson(Map<String, dynamic> json) {
+    registrationNumber = json['registrationNumber'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    specialization = json['specialization'];
+    contactNumber = json['contactNumber'];
+    email = json['email'];
+    password = json['password'];
+    qualifications = json['qualifications'];
+    certifications = json['certifications'].cast<String>();
+    profileImageUrl = json['profileImageUrl'];
+    doctorStatus = json['doctorStatus'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    createdByHospitalId = json['createdByHospitalId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['registrationNumber'] = this.registrationNumber;
+    data['firstName'] = this.firstName;
+    data['lastName'] = this.lastName;
+    data['specialization'] = this.specialization;
+    data['contactNumber'] = this.contactNumber;
+    data['email'] = this.email;
+    data['password'] = this.password;
+    data['qualifications'] = this.qualifications;
+    data['certifications'] = this.certifications;
+    data['profileImageUrl'] = this.profileImageUrl;
+    data['doctorStatus'] = this.doctorStatus;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['createdByHospitalId'] = this.createdByHospitalId;
+    return data;
+  }
+}
+

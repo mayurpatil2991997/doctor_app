@@ -82,7 +82,9 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(right:right ?? 2.w, left: left ?? 0.w),
       child: TextFormField(
-        style: style ?? AppTextStyle.normalText,
+        style: style ?? AppTextStyle.normalText.copyWith(
+          color: AppColor.blackColor,
+        ),
         keyboardType: keyboardType,
         controller: controller,
         validator: validator,

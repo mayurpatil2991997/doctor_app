@@ -49,8 +49,9 @@ class APIConstant {
     }
   }
 
-  static String baseUrl = "http://api.doctech.solutions/api";
+  static String baseUrl = "http://www.doctech.solutions/api";
   static String register = "$baseUrl/register/patient";
   static String sendOtp = "$baseUrl/auth/otp/initiate";
   static String login = "$baseUrl/auth/login";
+  static String doctors = "$baseUrl/doctors";
 }
