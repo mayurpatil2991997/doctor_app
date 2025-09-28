@@ -7,6 +7,7 @@ import '../../Themes/app_colors_theme.dart';
 import '../../Themes/app_text_theme.dart';
 import '../../Utils/helper_method.dart';
 import '../../constants/app_const_assets.dart';
+import '../../model/doctor_model.dart';
 import '../main_navigation/main_navigation_controller.dart';
 import 'home_controller.dart';
 
@@ -301,126 +302,202 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SizedBox(height: 1.h),
-        ListView.builder(
-          itemCount: 5,
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 8,
-                        offset: Offset(1, 8),
-                      ),
-                    ],
+        Obx(() {
+          if (homeController.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColor.primaryColor,
+              ),
+            );
+          } else if (homeController.hasError.value) {
+            return Center(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Colors.red,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                  SizedBox(height: 8),
+                  Text(
+                    'Error loading doctors',
+                    style: AppTextStyle.mediumText.copyWith(
+                      color: AppColor.blackColor,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => homeController.retryLoading(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      'Retry',
+                      style: AppTextStyle.mediumText.copyWith(
+                        color: AppColor.whiteColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else if (homeController.top3Doctors.isEmpty) {
+            return Center(
+              child: Text(
+                'No doctors available',
+                style: AppTextStyle.mediumText.copyWith(
+                  color: AppColor.greyColor,
+                ),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: homeController.top3Doctors.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final doctor = homeController.top3Doctors[index];
+                return Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 8,
+                            offset: Offset(1, 8),
+                          ),
+                        ],
+                      ),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 30.w,
-                            height: 16.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: AssetImage("assets/images/doctor.png"),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 2.w),
-                          Padding(
-                            padding: EdgeInsets.only(left: 3.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Dr. Chetan Kale",
-                                  style: AppTextStyle.boldText.copyWith(
-                                    color: AppColor.blackColor,
-                                    fontSize: 18,
-                                  ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 30.w,
+                                height: 16.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppColor.primaryColor.withOpacity(0.1),
                                 ),
-                                SizedBox(height: 0.5.h),
-                                Text(
-                                  "Pediatrician",
-                                  style: AppTextStyle.boldText.copyWith(
-                                    color: AppColor.blackColor.withOpacity(0.5),
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                SizedBox(height: 0.5.h),
-                                Text(
-                                  "10 Year Experience",
-                                  style: AppTextStyle.boldText.copyWith(
-                                    color: AppColor.blackColor.withOpacity(0.5),
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                SizedBox(height: 0.5.h),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      color: AppColor.blackColor,
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      "Pimpari - chinchwad",
-                                      style: AppTextStyle.boldText.copyWith(
-                                        color: AppColor.blackColor.withOpacity(
-                                          0.5,
+                                child: doctor.profileImageUrl != null && doctor.profileImageUrl!.isNotEmpty
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          doctor.profileImageUrl!,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return _buildDoctorImagePlaceholder(doctor);
+                                          },
                                         ),
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 0.5.h),
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: AppColor.companyUpdateColor2,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
+                                      )
+                                    : _buildDoctorImagePlaceholder(doctor),
+                              ),
+                              SizedBox(width: 2.w),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Icon(Icons.star, color: Colors.orange),
-                                      SizedBox(width: 2.2),
                                       Text(
-                                        "4.5",
+                                        "Dr. ${doctor.firstName ?? ""} ${doctor.lastName ?? ""}",
                                         style: AppTextStyle.boldText.copyWith(
                                           color: AppColor.blackColor,
+                                          fontSize: 18,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 0.5.h),
+                                      Text(
+                                        doctor.specialization ?? "General Physician",
+                                        style: AppTextStyle.boldText.copyWith(
+                                          color: AppColor.blackColor.withOpacity(0.5),
                                           fontSize: 14,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 0.5.h),
+                                      Text(
+                                        doctor.qualifications ?? "10 Year Experience",
+                                        style: AppTextStyle.boldText.copyWith(
+                                          color: AppColor.blackColor.withOpacity(0.5),
+                                          fontSize: 14,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 0.5.h),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            color: AppColor.blackColor,
+                                            size: 20,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Expanded(
+                                            child: Text(
+                                              "Pimpari - chinchwad", // Hardcoded location
+                                              style: AppTextStyle.boldText.copyWith(
+                                                color: AppColor.blackColor.withOpacity(0.5),
+                                                fontSize: 14,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 0.5.h),
+                                      Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: AppColor.companyUpdateColor2,
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(Icons.star, color: AppColor.yellowColor),
+                                            SizedBox(width: 2.2),
+                                            Text(
+                                              "4.5", // Hardcoded rating
+                                              style: AppTextStyle.boldText.copyWith(
+                                                color: AppColor.blackColor,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 2.h),
-              ],
+                    ),
+                    SizedBox(height: 2.h),
+                  ],
+                );
+              },
             );
-          },
-        ),
+          }
+        }),
       ],
     );
   }
@@ -514,6 +591,31 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildDoctorImagePlaceholder(DoctorDetails doctor) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            AppColor.primaryColor,
+            AppColor.primaryColor.withOpacity(0.7),
+          ],
+        ),
+      ),
+      child: Center(
+        child: Text(
+          doctor.firstName != null && doctor.firstName!.isNotEmpty
+              ? doctor.firstName![0].toUpperCase()
+              : "D",
+          style: AppTextStyle.boldText.copyWith(
+            color: AppColor.whiteColor,
+            fontSize: 24,
+          ),
+        ),
+      ),
     );
   }
 }
