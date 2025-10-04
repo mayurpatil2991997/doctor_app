@@ -13,4 +13,6 @@ class AppRoutes {
   static const themes = '/themes';
   static const family = '/family';
   static const ipdServices = '/ipd-services';
+  static const patientHome = '/patient-home';
+  static const exercise = '/exercise';
 }
