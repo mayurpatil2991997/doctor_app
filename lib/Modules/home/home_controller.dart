@@ -8,16 +8,21 @@ import '../../model/doctor_model.dart';
 
 class HomeController extends GetxController {
   final phoneController = TextEditingController();
+  final searchController = TextEditingController();
   
   var isLoading = false.obs;
   var hasError = false.obs;
   var errorMessage = ''.obs;
   var doctorsList = <DoctorDetails>[].obs;
   var top3Doctors = <DoctorDetails>[].obs;
+  var userName = 'Chetan Kale'.obs;
+  var userLocation = 'Pune, Maharashtra'.obs;
+  var greeting = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
+    _setGreeting();
     // Add a small delay to ensure UI is ready
     Future.delayed(Duration(milliseconds: 100), () {
       loadDoctors(); // Call API when controller initializes
@@ -27,6 +32,7 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     phoneController.dispose();
+    searchController.dispose();
     super.onClose();
   }
 
@@ -153,5 +159,46 @@ class HomeController extends GetxController {
 
   void retryLoading() {
     loadDoctors();
+  }
+
+  void _setGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      greeting.value = 'Good Morning';
+    } else if (hour < 17) {
+      greeting.value = 'Good Afternoon';
+    } else {
+      greeting.value = 'Good Evening';
+    }
+  }
+
+  // Get user initials for avatar
+  String getUserInitials() {
+    if (userName.value.isNotEmpty) {
+      final names = userName.value.split(' ');
+      if (names.length >= 2) {
+        return '${names[0][0]}${names[1][0]}'.toUpperCase();
+      }
+      return names[0][0].toUpperCase();
+    }
+    return 'U';
+  }
+
+  // Search functionality
+  void performSearch(String query) {
+    if (query.isEmpty) {
+      _setTop3Doctors();
+      return;
+    }
+    
+    final filteredDoctors = doctorsList.where((doctor) {
+      final name = '${doctor.firstName ?? ''} ${doctor.lastName ?? ''}'.toLowerCase();
+      final specialization = doctor.specialization?.toLowerCase() ?? '';
+      final searchQuery = query.toLowerCase();
+      
+      return name.contains(searchQuery) || specialization.contains(searchQuery);
+    }).toList();
+    
+    top3Doctors.value = filteredDoctors.take(3).toList();
   }
 }

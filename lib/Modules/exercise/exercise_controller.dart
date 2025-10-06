@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Routes/app_routes.dart';
 import 'exercise_model.dart';
 
 class ExerciseController extends GetxController {
@@ -29,22 +30,22 @@ class ExerciseController extends GetxController {
 
     exercisesList.value = [
       ExerciseModel(
-        title: "Shoulder Mobility",
-        subtitle: "Est. 30 min",
+        title: "Knee Extension",
+        subtitle: "STRENGTH • 30 min",
         duration: "30 min",
-        type: "MOBILITY",
+        type: "STRENGTH",
         status: "NEXT UP",
-        icon: "shoulder",
+        icon: "knee",
         statusColor: Colors.orange,
         isCompleted: false,
       ),
       ExerciseModel(
-        title: "Knee Strengthening",
-        subtitle: "STRENGTH • 20 min",
+        title: "Shoulder Mobility",
+        subtitle: "MOBILITY • 20 min",
         duration: "20 min",
-        type: "STRENGTH",
+        type: "MOBILITY",
         status: "Completed",
-        icon: "knee",
+        icon: "shoulder",
         statusColor: Colors.green,
         isCompleted: true,
       ),
@@ -56,6 +57,26 @@ class ExerciseController extends GetxController {
         status: "Pending",
         icon: "back",
         statusColor: Colors.orange,
+        isCompleted: false,
+      ),
+      ExerciseModel(
+        title: "Hip Flexor Stretch",
+        subtitle: "FLEXIBILITY • 10 min",
+        duration: "10 min",
+        type: "FLEXIBILITY",
+        status: "Pending",
+        icon: "hip",
+        statusColor: Colors.blue,
+        isCompleted: false,
+      ),
+      ExerciseModel(
+        title: "Core Strengthening",
+        subtitle: "STRENGTH • 25 min",
+        duration: "25 min",
+        type: "STRENGTH",
+        status: "Pending",
+        icon: "core",
+        statusColor: Colors.purple,
         isCompleted: false,
       ),
     ];
@@ -70,23 +91,47 @@ class ExerciseController extends GetxController {
   }
 
   void startExercise(ExerciseModel exercise) {
-    Get.snackbar(
-      "Starting Exercise",
-      "Starting ${exercise.title}...",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+    try {
+      Get.toNamed(AppRoutes.exerciseSession, arguments: {
+        'exerciseName': exercise.title,
+        'nextExercise': 'Rest',
+        'totalSets': 3,
+        'currentSet': 1,
+        'duration': 30, // 30 seconds for demo
+        'isPlayAll': false,
+      });
+    } catch (e) {
+      print('Navigation error: $e');
+      Get.snackbar(
+        "Starting Exercise",
+        "Starting ${exercise.title}...",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    }
   }
 
   void playAllExercises() {
-    Get.snackbar(
-      "Play All",
-      "Starting all exercises in sequence...",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.blue,
-      colorText: Colors.white,
-    );
+    try {
+      Get.toNamed(AppRoutes.exerciseSession, arguments: {
+        'exerciseName': 'Knee Extension',
+        'nextExercise': 'Shoulder Mobility',
+        'totalSets': 5,
+        'currentSet': 1,
+        'duration': 30, // 30 seconds for demo
+        'isPlayAll': true,
+        'exerciseList': exercisesList.value,
+      });
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to start exercise session: ${e.toString()}",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   void rescheduleSession() {

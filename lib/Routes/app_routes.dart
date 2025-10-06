@@ -15,4 +15,7 @@ class AppRoutes {
   static const ipdServices = '/ipd-services';
   static const patientHome = '/patient-home';
   static const exercise = '/exercise';
+  static const exerciseSession = '/exercise-session';
+  static const diet = '/diet';
+  static const dietDetail = '/diet-detail';
 }

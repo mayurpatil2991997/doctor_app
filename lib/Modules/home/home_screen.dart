@@ -52,26 +52,32 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'title': 'General Physician',
       'color': Colors.redAccent,
+      'icon': Icons.local_hospital_rounded,
     },
     {
       'title': 'Dermatologist',
       'color': Colors.blueAccent,
+      'icon': Icons.healing_rounded,
     },
     {
       'title': 'Dentist',
       'color': Colors.greenAccent,
+      'icon': Icons.medical_services_rounded,
     },
     {
       'title': 'Cardiologist',
       'color': Colors.orangeAccent,
+      'icon': Icons.favorite_rounded,
     },
     {
       'title': 'Neurologist',
       'color': Colors.purpleAccent,
+      'icon': Icons.psychology_rounded,
     },
     {
       'title': 'Psychiatrist',
       'color': Colors.tealAccent,
+      'icon': Icons.self_improvement_rounded,
     },
   ];
 
@@ -87,24 +93,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColor.bgColor,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(15.h),
-        child: SafeArea(
-          child: header(),
-        ),
+        preferredSize: Size.fromHeight(12.h),
+        child: header(),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 2.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: Column(children: [upcomingAppointment()]),
-            ),
+            Column(children: [
+              revisitAndConnect(),
+              SizedBox(height: 0.5.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: upcomingAppointment(),
+              ),
+            ]),
             SizedBox(height: 2.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: specializationWidget(),
-            ),
+            specializationWidget(),
             SizedBox(height: 1.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -119,46 +124,282 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget header() {
     return Container(
-      padding: EdgeInsets.all(12),
-      color: AppColor.primaryColor,
-      height: 15.h,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 2.w),
-                child: Text(
-                  "Chetan Kale",
-                  style: AppTextStyle.semiBoldText.copyWith(
-                    fontSize: 18,
-                    color: AppColor.whiteColor,
-                  ),
-                ),
-              ),
-              Spacer(),
-              Icon(Icons.search, color: AppColor.whiteColor),
-              SizedBox(width: 2.w),
-              SvgPicture.asset(AppAssets.notification),
-            ],
-          ),
-          SizedBox(height: 1.h),
-          Row(
-            children: [
-              Icon(Icons.location_on, color: AppColor.whiteColor),
-              Text(
-                "Pune",
-                style: AppTextStyle.semiBoldText.copyWith(
-                  fontSize: 14,
-                  color: AppColor.whiteColor,
-                ),
-              ),
-            ],
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColor.primaryColor,
+            AppColor.primaryColor.withOpacity(0.9),
+          ],
+        ),
+        // borderRadius: BorderRadius.only(
+        //   bottomLeft: Radius.circular(20),
+        //   bottomRight: Radius.circular(20),
+        // ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.primaryColor.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 3),
           ),
         ],
       ),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Top Row - User Profile and Name with Location
+              Row(
+                children: [
+                  // User Profile Avatar
+                  Container(
+                    width: 9.w,
+                    height: 9.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColor.whiteColor.withOpacity(0.2),
+                      border: Border.all(
+                        color: AppColor.whiteColor.withOpacity(0.3),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        homeController.getUserInitials(),
+                        style: AppTextStyle.boldText.copyWith(
+                          color: AppColor.whiteColor,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 3.w),
+                  // User Name and Location
+                  Expanded(
+                    child: Obx(() => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          homeController.userName.value,
+                          style: AppTextStyle.boldText.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.whiteColor,
+                          ),
+                        ),
+                        SizedBox(height: 0.1.h),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on_rounded,
+                              color: AppColor.whiteColor.withOpacity(0.8),
+                              size: 10.sp,
+                            ),
+                            SizedBox(width: 1.w),
+                            Expanded(
+                              child: Text(
+                                homeController.userLocation.value,
+                                style: AppTextStyle.mediumText.copyWith(
+                                  fontSize: 10.sp,
+                                  color: AppColor.whiteColor.withOpacity(0.8),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )),
+                  ),
+                  // Notification Icon with Badge
+                  Stack(
+                    children: [
+                      Container(
+                        width: 5.w,
+                        height: 5.w,
+                        child: SvgPicture.asset(
+                          AppAssets.notification,
+                          color: AppColor.whiteColor,
+                          width: 10,
+                          height: 10,
+                        ),
+                      ),
+                      // Notification Badge
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColor.whiteColor,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget revisitAndConnect() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section Title with proper padding
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          child: Text(
+            "My Appointments",
+            style: AppTextStyle.boldText.copyWith(
+              color: AppColor.blackColor,
+              fontSize: 18,
+            ),
+          ),
+        ),
+        // Horizontal Scrollable Cards - Full width
+        SizedBox(
+          height: 12.h,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.only(left: 3.w, right: 1.w),
+        itemCount: 2,
+        itemBuilder: (context, index) {
+          // Doctor cards (match screenshot layout: left image, right details, pill button)
+          final doctors = [
+            {
+              'name': 'Dr. Kiran Doke',
+              'specialization': 'Pediatrician',
+              'image': 'assets/images/doctor1.jpg',
+              'lastAppointment': '12 Jun 2025',
+            },
+            {
+              'name': 'Dr. Rajesh Kumar',
+              'specialization': 'Cardiologist',
+              'image': 'assets/images/doctor.png',
+              'lastAppointment': '08 May 2025',
+            },
+          ];
+
+          final doctor = doctors[index];
+
+            return GestureDetector(
+              onTap: () {
+                // Navigate to patient_home when doctor card is tapped
+                Get.toNamed('/patient-home');
+              },
+              child: Container(
+                width: 52.w,
+                margin: EdgeInsets.only(right: 3.w, top: 1.h, bottom: 2.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(1, 8)),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.6.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Left: portrait image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          doctor['image']!,
+                          width: 15.w,
+                          height: 6.8.h,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      SizedBox(width: 3.w),
+                      // Right: name, specialization, button
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        doctor['name']!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: AppTextStyle.boldText.copyWith(
+                                          color: AppColor.blackColor,
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                      SizedBox(height: 0.4.h),
+                                      Text(
+                                        doctor['specialization']!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: AppTextStyle.mediumText.copyWith(
+                                          color: AppColor.greyColor,
+                                          fontSize: 10.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 0.2.h),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today_outlined,
+                                  size: 8.sp,
+                                  color: AppColor.greyColor,
+                                ),
+                                SizedBox(width: 1.w),
+                                Expanded(
+                                  child: Text(
+                                    '${doctor['lastAppointment']}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: AppTextStyle.mediumText.copyWith(
+                                      color: AppColor.greyColor,
+                                      fontSize: 8.5.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 0.1.h),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          
+        },
+      ),
+        ),
+      ],
     );
   }
 
@@ -506,8 +747,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Section Title with proper padding
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 1.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -534,58 +776,64 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SizedBox(height: 1.h),
+        // Horizontal Scrollable Cards - Full width
         SizedBox(
           height: 18.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.only(left: 3.w, right: 1.w),
             itemCount: specializationList.length,
             itemBuilder: (context, index) {
               final item = specializationList[index];
-              return Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 25.w,
-                        height: 10.h,
-                        decoration: BoxDecoration(
-                          color: item['color'],
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                          child: SvgPicture.asset(
-                            AppAssets.heart,
-                            height: 6.h,
-                            width: 12.w,
-                            fit: BoxFit.contain,
+              return Container(
+                width: 22.w,
+                margin: EdgeInsets.only(right: 4.w, top: 0.5.h, bottom: 0.5.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 18.w,
+                      height: 8.h,
+                      decoration: BoxDecoration(
+                        color: item['color'],
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: _getSpecializationIcon(item['title']),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Container(
+                      width: 22.w,
+                      height: 4.h,
+                      child: Center(
+                        child: Text(
+                          item['title'],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.semiBoldText.copyWith(
+                            fontSize: 10.sp,
+                            color: AppColor.blackColor,
+                            height: 1.2,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      SizedBox(
-                        width: 25.w,
-                        child: Center(
-                          child: Text(
-                            item['title'],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
-                            style: AppTextStyle.semiBoldText.copyWith(
-                              fontSize: 14,
-                              color: AppColor.blackColor
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                ],
+                    )
+                  ],
+                ),
               );
             },
           ),
@@ -617,5 +865,24 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Widget _getSpecializationIcon(String title) {
+    switch (title) {
+      case 'General Physician':
+        return Icon(Icons.local_hospital_rounded, size: 24, color: Colors.white);
+      case 'Dermatologist':
+        return Icon(Icons.healing_rounded, size: 24, color: Colors.white);
+      case 'Dentist':
+        return Icon(Icons.medical_services_rounded, size: 24, color: Colors.white);
+      case 'Cardiologist':
+        return Icon(Icons.favorite_rounded, size: 24, color: Colors.white);
+      case 'Neurologist':
+        return Icon(Icons.psychology_rounded, size: 24, color: Colors.white);
+      case 'Psychiatrist':
+        return Icon(Icons.self_improvement_rounded, size: 24, color: Colors.white);
+      default:
+        return Icon(Icons.medical_services_rounded, size: 24, color: Colors.white);
+    }
   }
 }

@@ -24,6 +24,11 @@ import '../Modules/patient_home/patient_home_binding.dart';
 import '../Modules/patient_home/patient_home_screen.dart';
 import '../Modules/exercise/exercise_binding.dart';
 import '../Modules/exercise/exercise_screen.dart';
+import '../Modules/diet/diet_binding.dart';
+import '../Modules/diet/diet_screen.dart';
+import '../Modules/diet/diet_detail_screen.dart';
+import '../Modules/exercise/exercise_session_binding.dart';
+import '../Modules/exercise/exercise_session_screen.dart';
 import '../Modules/home/home_binding.dart';
 import '../Modules/home/home_screen.dart';
 import '../Modules/intro/intro_binding.dart';
@@ -116,6 +121,26 @@ class AppPages {
       name: AppRoutes.exercise,
       page: () => ExerciseScreen(),
       binding: ExerciseBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.exerciseSession,
+      page: () => ExerciseSessionScreen(
+        exerciseName: Get.arguments['exerciseName'] ?? 'Exercise',
+        nextExercise: Get.arguments['nextExercise'] ?? 'Rest',
+        totalSets: Get.arguments['totalSets'] ?? 3,
+        currentSet: Get.arguments['currentSet'] ?? 1,
+        duration: Get.arguments['duration'] ?? 30,
+      ),
+      binding: ExerciseSessionBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.diet,
+      page: () => DietScreen(),
+      binding: DietBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.dietDetail,
+      page: () => DietDetailScreen(),
     ),
   ];
 }
