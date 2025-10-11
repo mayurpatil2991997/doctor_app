@@ -86,15 +86,35 @@ class APIServices {
     Map<String, dynamic>? param,
     Map<String, dynamic>? headers,
   }) async {
+    print('🚀 APIServices: Starting GET request to: $url');
+    print('📋 APIServices: Parameters: $param');
+    print('📋 APIServices: Headers: $headers');
+    
     try {
       final response = await dioInstance.get(
         url,
         queryParameters: param,
         options: dio.Options(headers: headers),
       );
+      
+      print('✅ APIServices: GET request successful');
+      print('📊 APIServices: Status Code: ${response.statusCode}');
+      print('📄 APIServices: Response Data: ${response.data}');
+      
       return Success(code: response.statusCode, response: response);
     } on dio.DioException catch (e) {
+      print('❌ APIServices: GET request failed with DioException');
+      print('🚨 APIServices: Error type: ${e.type}');
+      print('🚨 APIServices: Error message: ${e.message}');
+      print('🚨 APIServices: Response data: ${e.response?.data}');
       return _handleError(e);
+    } catch (e) {
+      print('❌ APIServices: GET request failed with general exception');
+      print('🚨 APIServices: Error: $e');
+      return _handleError(dio.DioException(
+        requestOptions: dio.RequestOptions(path: url),
+        message: e.toString(),
+      ));
     }
   }
 

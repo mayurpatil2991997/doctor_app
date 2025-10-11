@@ -88,6 +88,51 @@ class Repository {
     return response;
   }
 
+  Future<APIStatus> doctorDetailsApi({
+    required String registrationNumber,
+  }) async {
+    String url = "${APIConstant.doctorDetails}/$registrationNumber/complete";
+    print('🔗 Repository: Making GET request to: $url');
+    
+    var response = await APIServices.instance.getAPICall(
+      url: url,
+    );
+    
+    print('📊 Repository: Response type: ${response.runtimeType}');
+    if (response is Success) {
+      print('✅ Repository: Success response received');
+      print('📄 Repository: Response data: ${response.response?.data}');
+    } else if (response is Failure) {
+      print('❌ Repository: Failure response received');
+      print('🚨 Repository: Error: ${response.errorResponse}');
+    }
+    
+    return response;
+  }
+
+  Future<APIStatus> doctorTimeSlotsApi({
+    required String registrationNumber,
+    required String date,
+  }) async {
+    String url = "${APIConstant.doctorTimeSlots}/$registrationNumber/slots/date/$date?slotMinutes=30";
+    print('🔗 Repository: Making GET request to: $url');
+    
+    var response = await APIServices.instance.getAPICall(
+      url: url,
+    );
+    
+    print('📊 Repository: TimeSlots Response type: ${response.runtimeType}');
+    if (response is Success) {
+      print('✅ Repository: TimeSlots Success response received');
+      print('📄 Repository: TimeSlots Response data: ${response.response?.data}');
+    } else if (response is Failure) {
+      print('❌ Repository: TimeSlots Failure response received');
+      print('🚨 Repository: TimeSlots Error: ${response.errorResponse}');
+    }
+    
+    return response;
+  }
+
 // Future<APIStatus> companySettingsApi() async {
 //   var response = await APIServices.instance.getAPICall(
 //     url: APIConstant.companySettings,

@@ -54,4 +54,6 @@ class APIConstant {
   static String sendOtp = "$baseUrl/auth/otp/initiate";
   static String login = "$baseUrl/auth/login";
   static String doctors = "$baseUrl/doctors";
+  static String doctorDetails = "$baseUrl/doctors";
+  static String doctorTimeSlots = "$baseUrl/doctor/appointment-timings/doctor";
 }
