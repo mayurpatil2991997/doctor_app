@@ -5,6 +5,9 @@ import 'package:sizer/sizer.dart';
 import '../../Themes/app_colors_theme.dart';
 import '../../Themes/app_text_theme.dart';
 import '../../constants/app_const_assets.dart';
+import '../../widgets/common_card_widget.dart';
+import '../../widgets/common_avatar_widget.dart';
+import '../../widgets/common_button_widget.dart';
 import 'patient_home_controller.dart';
 
 class PatientHomeScreen extends StatefulWidget {
@@ -128,20 +131,9 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
 
   Widget _buildHospitalCard() {
-    return Container(
+    return CommonCardWidget(
       margin: EdgeInsets.symmetric(horizontal: 2.w),
       padding: EdgeInsets.all(2.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -174,20 +166,9 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   }
 
   Widget _buildDoctorCard() {
-    return Container(
+    return CommonCardWidget(
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
