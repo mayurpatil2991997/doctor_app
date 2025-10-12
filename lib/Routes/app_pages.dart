@@ -8,6 +8,8 @@ import '../Modules/doctor_profile/doctor_profile_screen.dart';
 import '../Modules/doctors/doctors_binding.dart';
 import '../Modules/doctors/doctors_controller.dart';
 import '../Modules/doctors/doctors_screen.dart';
+import '../Modules/fitness_assessment/fitness_assessment_binding.dart';
+import '../Modules/fitness_assessment/fitness_assessment_screen.dart';
 import '../Modules/medicines/medicines_binding.dart';
 import '../Modules/medicines/medicines_screen.dart';
 import '../Modules/profile/profile_binding.dart';
@@ -137,6 +139,11 @@ class AppPages {
       name: AppRoutes.diet,
       page: () => DietScreen(),
       binding: DietBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.fitnessAssessment,
+      page: () => FitnessAssessmentScreen(),
+      binding: FitnessAssessmentBinding(),
     ),
     GetPage(
       name: AppRoutes.dietDetail,

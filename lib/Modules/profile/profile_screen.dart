@@ -167,6 +167,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           
           SizedBox(height: 1.h),
+
+          menuOptionCard(
+            icon: Icons.fitness_center,
+            title: "Fitness Assessment",
+            onTap: () {
+              Get.toNamed('/fitness-assessment');
+            },
+          ),
+
+          SizedBox(height: 1.h),
           
           // Notification
           menuOptionCard(
