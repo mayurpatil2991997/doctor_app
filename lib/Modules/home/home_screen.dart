@@ -629,13 +629,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                   borderRadius: BorderRadius.circular(12),
                                   color: AppColor.primaryColor.withOpacity(0.1),
                                 ),
-                                child: doctor.profileImageUrl != null && doctor.profileImageUrl!.isNotEmpty
+                                child: doctor.profileImageUrl != null && 
+                                        doctor.profileImageUrl!.isNotEmpty &&
+                                        doctor.profileImageUrl!.contains('http')
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Image.network(
                                           doctor.profileImageUrl!,
                                           fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return Container(
+                                              color: AppColor.primaryColor.withOpacity(0.1),
+                                              child: Center(
+                                                child: CircularProgressIndicator(
+                                                  value: loadingProgress.expectedTotalBytes != null
+                                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                      : null,
+                                                  strokeWidth: 2,
+                                                  valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                                                ),
+                                              ),
+                                            );
+                                          },
                                           errorBuilder: (context, error, stackTrace) {
+                                            print('🖼️ Home doctor image load error: $error');
                                             return _buildDoctorImagePlaceholder(doctor);
                                           },
                                         ),

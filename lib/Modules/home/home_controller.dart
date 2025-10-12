@@ -56,6 +56,19 @@ class HomeController extends GetxController {
           if (responseData is Map<String, dynamic>) {
             print('Home Response is already a Map, parsing directly');
             var result = DoctorModel.fromJson(responseData);
+            
+            // Clean problematic image URLs
+            if (result.doctorDetails != null) {
+              for (var doctor in result.doctorDetails!) {
+                if (doctor.profileImageUrl != null && 
+                    (doctor.profileImageUrl!.contains('cloudflarestorage.com') || 
+                     !doctor.profileImageUrl!.contains('http'))) {
+                  print('🚫 Cleaning problematic home doctor image URL: ${doctor.profileImageUrl}');
+                  doctor.profileImageUrl = null;
+                }
+              }
+            }
+            
             doctorsList.value = result.doctorDetails ?? [];
             _setTop3Doctors();
             hasError.value = false;

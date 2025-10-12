@@ -56,4 +56,5 @@ class APIConstant {
   static String doctors = "$baseUrl/doctors";
   static String doctorDetails = "$baseUrl/doctors";
   static String doctorTimeSlots = "$baseUrl/doctor/appointment-timings/doctor";
+  static String bookAppointment = "$baseUrl/appointments/book/{SLOT_ID}";
 }

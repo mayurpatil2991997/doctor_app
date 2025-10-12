@@ -57,7 +57,7 @@ class DoctorSlotModel {
 }
 
 class Slots {
-  Null? id;
+  String? id;
   String? startTime;
   String? endTime;
   bool? available;

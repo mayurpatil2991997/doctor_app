@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../APIHelper/api_constant.dart';
+import '../../Themes/app_colors_theme.dart';
 import '../../model/doctor_details_model.dart';
 import '../../model/doctor_slot_model.dart';
 import '../../APIHelper/repository.dart';
 import '../../APIHelper/api_status.dart';
+import '../../widgets/appointment_success_dialog.dart';
 
 class DoctorProfileController extends GetxController {
   var isLoading = false.obs;
@@ -20,6 +22,10 @@ class DoctorProfileController extends GetxController {
   var selectedMonth = DateTime.now().obs;
   var isLoadingSlots = false.obs;
   
+  // Notes related
+  var notesController = TextEditingController();
+  var notes = ''.obs;
+  
   // Calendar related
   var calendarDates = <DateTime>[].obs;
   
@@ -28,6 +34,13 @@ class DoctorProfileController extends GetxController {
     super.onInit();
     generateCalendarDates();
     loadDoctorProfile();
+    loadNotes();
+  }
+
+  @override
+  void onClose() {
+    notesController.dispose();
+    super.onClose();
   }
 
   void loadDoctorProfile() async {
@@ -104,16 +117,24 @@ class DoctorProfileController extends GetxController {
     loadTimeSlotsForDate(selectedDate.value);
   }
 
-  void _createDoctorProfileFromDetails() {
-    if (doctorDetails.value == null) return;
+         void _createDoctorProfileFromDetails() {
+           if (doctorDetails.value == null) return;
 
-    final details = doctorDetails.value!;
-    print('📊 Setting doctorProfile directly from DoctorDetailsModel: ${details.firstName} ${details.lastName}');
-    
-    // Directly use DoctorDetailsModel
-    doctorProfile.value = details;
-    print('✅ DoctorDetailsModel set directly to doctorProfile');
-  }
+           final details = doctorDetails.value!;
+           print('📊 Setting doctorProfile directly from DoctorDetailsModel: ${details.firstName} ${details.lastName}');
+           
+           // Clean problematic image URLs
+           if (details.profileImageUrl != null && 
+               (details.profileImageUrl!.contains('cloudflarestorage.com') || 
+                !details.profileImageUrl!.contains('http'))) {
+             print('🚫 Cleaning problematic profile image URL: ${details.profileImageUrl}');
+             details.profileImageUrl = null;
+           }
+           
+           // Directly use DoctorDetailsModel
+           doctorProfile.value = details;
+           print('✅ DoctorDetailsModel set directly to doctorProfile');
+         }
 
   void _loadMockData() {
     // Fallback mock data using DoctorDetailsModel
@@ -371,15 +392,19 @@ class DoctorProfileController extends GetxController {
       // If available is true and booked is false, then slot is selectable
       bool isSelectable = isAvailable && !isBooked;
 
-      availableTimeSlots.add(TimeSlot(
-        time: time,
-        period: period,
-        isBooked: !isSelectable, // If not selectable, then it's booked
-        isSelected: false,
-        date: doctorSlots.value?.date ?? DateFormat('yyyy-MM-dd').format(selectedDate.value),
-      ));
+             // Use original slot ID from API response
+             String slotId = slot.id ?? "${doctorProfile.value?.registrationNumber ?? 'DOC001'}_${DateFormat('yyyyMMdd').format(selectedDate.value)}_${time.replaceAll(':', '')}";
+
+             availableTimeSlots.add(TimeSlot(
+               time: time,
+               period: period,
+               isBooked: !isSelectable, // If not selectable, then it's booked
+               isSelected: false,
+               date: doctorSlots.value?.date ?? DateFormat('yyyy-MM-dd').format(selectedDate.value),
+               slotId: slotId,
+             ));
       
-      print('🕐 Slot: $time $period - Available: $isAvailable, Booked: $isBooked, Selectable: $isSelectable');
+      print('🕐 Slot: $time $period - Available: $isAvailable, Booked: $isBooked, Selectable: $isSelectable, SlotID: $slotId');
     }
     
     print('🕐 Converted ${availableTimeSlots.length} time slots from API');
@@ -401,16 +426,20 @@ class DoctorProfileController extends GetxController {
         String displayTime = hour > 12 ? "${hour - 12}" : hour == 0 ? "12" : hour.toString();
         displayTime = "${displayTime.padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
         
-        // Randomly make some slots booked (30% chance)
-        bool isBooked = (DateTime.now().millisecondsSinceEpoch + hour * 1000 + minute) % 3 == 0;
-        
-        mockSlots.add(TimeSlot(
-          time: displayTime,
-          period: period,
-          isBooked: isBooked,
-          isSelected: false,
-          date: DateFormat('yyyy-MM-dd').format(date),
-        ));
+               // Randomly make some slots booked (30% chance)
+               bool isBooked = (DateTime.now().millisecondsSinceEpoch + hour * 1000 + minute) % 3 == 0;
+               
+               // Generate slot ID for mock data
+               String slotId = "DOC001_${DateFormat('yyyyMMdd').format(date)}_${displayTime.replaceAll(':', '')}";
+               
+               mockSlots.add(TimeSlot(
+                 time: displayTime,
+                 period: period,
+                 isBooked: isBooked,
+                 isSelected: false,
+                 date: DateFormat('yyyy-MM-dd').format(date),
+                 slotId: slotId,
+               ));
       }
     }
     
@@ -421,16 +450,20 @@ class DoctorProfileController extends GetxController {
         String period = "PM";
         String displayTime = "${(hour - 12).toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
         
-        // Randomly make some slots booked (25% chance)
-        bool isBooked = (DateTime.now().millisecondsSinceEpoch + hour * 1000 + minute) % 4 == 0;
-        
-        mockSlots.add(TimeSlot(
-          time: displayTime,
-          period: period,
-          isBooked: isBooked,
-          isSelected: false,
-          date: DateFormat('yyyy-MM-dd').format(date),
-        ));
+               // Randomly make some slots booked (25% chance)
+               bool isBooked = (DateTime.now().millisecondsSinceEpoch + hour * 1000 + minute) % 4 == 0;
+               
+               // Generate slot ID for mock data
+               String slotId = "DOC001_${DateFormat('yyyyMMdd').format(date)}_${displayTime.replaceAll(':', '')}";
+               
+               mockSlots.add(TimeSlot(
+                 time: displayTime,
+                 period: period,
+                 isBooked: isBooked,
+                 isSelected: false,
+                 date: DateFormat('yyyy-MM-dd').format(date),
+                 slotId: slotId,
+               ));
       }
     }
     
@@ -475,7 +508,7 @@ class DoctorProfileController extends GetxController {
     );
   }
 
-  void bookAppointment() {
+         void bookAppointment() async {
     if (selectedTimeSlot.value == null) {
       Get.snackbar(
         "Error",
@@ -487,13 +520,93 @@ class DoctorProfileController extends GetxController {
       return;
     }
 
-    Get.snackbar(
-      "Appointment Booked",
-      "Appointment booked with Dr. ${doctorProfile.value?.firstName} ${doctorProfile.value?.lastName} on ${DateFormat('MMM dd, yyyy').format(selectedDate.value)} at ${selectedTimeSlot.value?.time} ${selectedTimeSlot.value?.period}",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+           if (doctorProfile.value?.registrationNumber == null) {
+             Get.snackbar(
+               "Error",
+               "Doctor information not available",
+               snackPosition: SnackPosition.BOTTOM,
+               backgroundColor: Colors.red,
+               colorText: Colors.white,
+             );
+             return;
+           }
+
+           // Show loading
+           Get.snackbar(
+             "Booking Appointment",
+             "Please wait while we book your appointment...",
+             snackPosition: SnackPosition.BOTTOM,
+             backgroundColor: Colors.blue,
+             colorText: Colors.white,
+             duration: Duration(seconds: 2),
+           );
+
+           try {
+             // Use slot ID from selected time slot
+             String slotId = selectedTimeSlot.value!.slotId ?? 
+                            "${doctorProfile.value!.registrationNumber}_${DateFormat('yyyyMMdd').format(selectedDate.value)}_${selectedTimeSlot.value!.time!.replaceAll(':', '')}";
+             
+             // Static patient ID as requested
+             String patientId = "1";
+             
+             // Get doctor registration number
+             String doctorRegistrationNumber = doctorProfile.value!.registrationNumber!;
+             
+             // Get notes from controller
+             String appointmentNotes = notes.value.isNotEmpty ? notes.value : "No additional notes";
+
+             print('📅 Booking appointment with details:');
+             print('🆔 Slot ID: $slotId');
+             print('👤 Patient ID: $patientId');
+             print('👨‍⚕️ Doctor Registration: $doctorRegistrationNumber');
+             print('📝 Notes: $appointmentNotes');
+
+             var response = await Repository.instance.bookAppointmentApi(
+               slotId: slotId,
+               patientId: patientId,
+               doctorRegistrationNumber: doctorRegistrationNumber,
+               notes: appointmentNotes,
+             );
+
+             if (response is Success) {
+               print('✅ Appointment booked successfully');
+               
+               // Show success dialog
+               AppointmentSuccessDialog.show(
+                 doctorName: "Dr. ${doctorProfile.value?.firstName} ${doctorProfile.value?.lastName}",
+                 appointmentDate: DateFormat('MMM dd, yyyy').format(selectedDate.value),
+                 appointmentTime: "${selectedTimeSlot.value?.time} ${selectedTimeSlot.value?.period}",
+                 onClose: () {
+                   // Clear selected slot and notes after successful booking
+                   selectedTimeSlot.value = null;
+                   clearNotes();
+                   // Refresh time slots to show updated availability
+                   loadTimeSlotsForDate(selectedDate.value);
+                 },
+               );
+               
+             } else if (response is Failure) {
+               print('❌ Appointment booking failed: ${response.errorResponse}');
+               Get.snackbar(
+                 "Booking Failed",
+                 "Failed to book appointment: ${response.errorResponse}",
+                 snackPosition: SnackPosition.BOTTOM,
+                 backgroundColor: Colors.red,
+                 colorText: Colors.white,
+                 duration: Duration(seconds: 4),
+               );
+             }
+           } catch (e) {
+             print('❌ Exception during appointment booking: $e');
+             Get.snackbar(
+               "Booking Error",
+               "An error occurred while booking appointment: ${e.toString()}",
+               snackPosition: SnackPosition.BOTTOM,
+               backgroundColor: Colors.red,
+               colorText: Colors.white,
+               duration: Duration(seconds: 4),
+             );
+           }
   }
 
   String getMonthYear() {
@@ -655,6 +768,33 @@ class DoctorProfileController extends GetxController {
   void refreshSlots() {
     print('🔄 Refreshing slots for current date...');
     loadTimeSlotsForDate(selectedDate.value);
+  }
+
+  // Notes related methods
+  void saveNotes() {
+    notes.value = notesController.text;
+    print('📝 Notes saved: ${notes.value}');
+    
+    Get.snackbar(
+      "Notes",
+      "Notes saved successfully!",
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: AppColor.primaryColor,
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  void clearNotes() {
+    notesController.clear();
+    notes.value = '';
+    print('🗑️ Notes cleared');
+  }
+
+  void loadNotes() {
+    // Load notes from storage or API
+    // For now, just set empty
+    notesController.text = notes.value;
   }
 
 }

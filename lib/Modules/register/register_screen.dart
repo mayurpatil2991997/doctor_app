@@ -42,7 +42,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Container(
                 color: AppColor.primaryColor,
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -59,8 +62,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         "Create an Account",
                         style: AppTextStyle.boldText.copyWith(
                           color: AppColor.whiteColor,
-                          fontSize: 18
-                        )
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ],
@@ -125,18 +128,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: null,
                           focusNode: registerController.emailFocusNode,
                           validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter Email or Username";
-                              }
-                  
-                              final isEmail = RegExp(r"^((([a-zA-Z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-zA-Z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$").hasMatch(value);
-                  
-                              if (!isEmail) {
-                                return "Enter a valid Email or Username (min 3 chars)";
-                              }
-                  
-                              return null;
+                            if (value == null || value.isEmpty) {
+                              return "Please enter Email or Username";
                             }
+
+                            final isEmail = RegExp(
+                              r"^((([a-zA-Z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-zA-Z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$",
+                            ).hasMatch(value);
+
+                            if (!isEmail) {
+                              return "Enter a valid Email or Username (min 3 chars)";
+                            }
+
+                            return null;
+                          },
                         ),
                         SizedBox(height: 2.h),
                         GestureDetector(
@@ -156,81 +161,112 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         SizedBox(height: 2.h),
-                        Obx(() => DropdownButtonFormField<String>(
-                          style: AppTextStyle.mediumText.copyWith(
-                            color: AppColor.blackColor,
-                          ),
-                          dropdownColor: AppColor.whiteColor,
-                          decoration: InputDecoration(
-                            labelText: 'Gender',
-                            labelStyle: AppTextStyle.mediumText.copyWith(
+                        Obx(
+                          () => DropdownButtonFormField<String>(
+                            style: AppTextStyle.mediumText.copyWith(
+                              color: AppColor.blackColor,
+                            ),
+                            dropdownColor: AppColor.whiteColor,
+                            decoration: InputDecoration(
+                              labelText: 'Gender',
+                              labelStyle: AppTextStyle.mediumText.copyWith(
                                 color: AppColor.blackColor.withOpacity(0.9),
-                                fontSize: 14
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
+                                fontSize: 14,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
                                   color: AppColor.greyColor,
-                                  strokeAlign: 1
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColor.greyColor,
-                                  strokeAlign: 1
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColor.redColor,
-                                  strokeAlign: 1
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                          ),
-                          value: registerController.selectedGender.value.isNotEmpty
-                              ? registerController.selectedGender.value
-                              : null,
-                          items: registerController.genderOptions.map((String gender) {
-                            return DropdownMenuItem<String>(
-                              value: gender,
-                              child: Text(
-                                gender,
-                                style: AppTextStyle.mediumText.copyWith(
-                                  color: AppColor.blackColor,
+                                  strokeAlign: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            registerController.selectedGender.value = newValue ?? '';
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: AppColor.greyColor,
+                                  strokeAlign: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: AppColor.redColor,
+                                  strokeAlign: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                            ),
+                            value:
+                                registerController
+                                        .selectedGender
+                                        .value
+                                        .isNotEmpty
+                                    ? registerController.selectedGender.value
+                                    : null,
+                            items:
+                                registerController.genderOptions.map((
+                                  String gender,
+                                ) {
+                                  return DropdownMenuItem<String>(
+                                    value: gender,
+                                    child: Text(
+                                      gender,
+                                      style: AppTextStyle.mediumText.copyWith(
+                                        color: AppColor.blackColor,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                            onChanged: (String? newValue) {
+                              registerController.selectedGender.value =
+                                  newValue ?? '';
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select gender';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        CustomTextField(
+                          hintText: 'Enter Phone',
+                          controller: registerController.contactController,
+                          keyboardType: TextInputType.number,
+                          maxLength: 13,
+                          focusNode: registerController.phoneFocusNode,
+                          onChanged: (value) {
+                            if (!value.startsWith('+91')) {
+                              registerController.contactController.text =
+                                  '+91$value';
+                              registerController
+                                  .contactController
+                                  .selection = TextSelection.fromPosition(
+                                TextPosition(
+                                  offset:
+                                      registerController
+                                          .contactController
+                                          .text
+                                          .length,
+                                ),
+                              );
+                            }
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please select gender';
-                            }
-                            return null;
-                          },
-                        )),
-                        SizedBox(height: 2.h),
-                        CustomTextField(
-                            hintText: 'Enter Phone',
-                            controller: registerController.contactController,
-                            keyboardType: TextInputType.number,
-                            maxLength: 10,
-                            focusNode: registerController.phoneFocusNode,
-                            validator: (value) {
-                            if (value == null || value.isEmpty) {
                               return 'Please enter mobile number';
                             }
-                            if (value.length != 10 ||
-                                !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+
+                            // Remove +91 or spaces before checking
+                            String number = value.replaceAll('+91', '').trim();
+
+                            if (number.length != 10 || !RegExp(r'^[0-9]{10}$').hasMatch(number)) {
                               return 'Enter valid 10-digit number';
                             }
+
                             return null;
                           },
                         ),
@@ -264,66 +300,78 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                         ),
                         SizedBox(height: 2.h),
-                        Obx(() => DropdownButtonFormField<String>(
-                          style: AppTextStyle.mediumText.copyWith(
-                            color: AppColor.blackColor,
-                          ),
-                          dropdownColor: AppColor.whiteColor,
-                          decoration: InputDecoration(
-                            labelText: 'Blood Group',
-                            labelStyle: AppTextStyle.mediumText.copyWith(
+                        Obx(
+                          () => DropdownButtonFormField<String>(
+                            style: AppTextStyle.mediumText.copyWith(
+                              color: AppColor.blackColor,
+                            ),
+                            dropdownColor: AppColor.whiteColor,
+                            decoration: InputDecoration(
+                              labelText: 'Blood Group',
+                              labelStyle: AppTextStyle.mediumText.copyWith(
                                 color: AppColor.blackColor.withOpacity(0.9),
-                                fontSize: 14
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
+                                fontSize: 14,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
                                   color: AppColor.greyColor,
-                                  strokeAlign: 1
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColor.greyColor,
-                                  strokeAlign: 1
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: AppColor.redColor,
-                                  strokeAlign: 1
-                              ),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                          ),
-                          value: registerController.selectedBloodGroup.value.isNotEmpty
-                              ? registerController.selectedBloodGroup.value
-                              : null,
-                          items: registerController.bloodGroupOptions.map((String gender) {
-                            return DropdownMenuItem<String>(
-                              value: gender,
-                              child: Text(
-                                gender,
-                                style: AppTextStyle.mediumText.copyWith(
-                                  color: AppColor.blackColor,
+                                  strokeAlign: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            registerController.selectedBloodGroup.value = newValue ?? '';
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select blood Group';
-                            }
-                            return null;
-                          },
-                        )),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: AppColor.greyColor,
+                                  strokeAlign: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: AppColor.redColor,
+                                  strokeAlign: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                            ),
+                            value:
+                                registerController
+                                        .selectedBloodGroup
+                                        .value
+                                        .isNotEmpty
+                                    ? registerController
+                                        .selectedBloodGroup
+                                        .value
+                                    : null,
+                            items:
+                                registerController.bloodGroupOptions.map((
+                                  String gender,
+                                ) {
+                                  return DropdownMenuItem<String>(
+                                    value: gender,
+                                    child: Text(
+                                      gender,
+                                      style: AppTextStyle.mediumText.copyWith(
+                                        color: AppColor.blackColor,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                            onChanged: (String? newValue) {
+                              registerController.selectedBloodGroup.value =
+                                  newValue ?? '';
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select blood Group';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                         SizedBox(height: 2.h),
                         Center(
                           child: ButtonWidget(
@@ -377,4 +425,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-

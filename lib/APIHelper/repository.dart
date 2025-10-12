@@ -133,6 +133,43 @@ class Repository {
     return response;
   }
 
+  Future<APIStatus> bookAppointmentApi({
+    required String slotId,
+    required String patientId,
+    required String doctorRegistrationNumber,
+    required String notes,
+  }) async {
+    String url = APIConstant.bookAppointment.replaceAll('{SLOT_ID}', slotId);
+    print('🔗 Repository: Making POST request to: $url');
+    
+    var params = {
+      "patientId": patientId,
+      "doctorRegistrationNumber": doctorRegistrationNumber,
+      "notes": notes,
+    };
+    
+    print('📋 Repository: Booking parameters: $params');
+    
+    var response = await APIServices.instance.postAPICall(
+      param: params,
+      url: url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+    
+    print('📊 Repository: BookAppointment Response type: ${response.runtimeType}');
+    if (response is Success) {
+      print('✅ Repository: BookAppointment Success response received');
+      print('📄 Repository: BookAppointment Response data: ${response.response?.data}');
+    } else if (response is Failure) {
+      print('❌ Repository: BookAppointment Failure response received');
+      print('🚨 Repository: BookAppointment Error: ${response.errorResponse}');
+    }
+    
+    return response;
+  }
+
 // Future<APIStatus> companySettingsApi() async {
 //   var response = await APIServices.instance.getAPICall(
 //     url: APIConstant.companySettings,

@@ -39,11 +39,27 @@ class CommonAvatarWidget extends StatelessWidget {
         color: bgColor.withOpacity(0.1),
       ),
       child: ClipOval(
-        child: imageUrl != null && imageUrl!.isNotEmpty
+        child: imageUrl != null && imageUrl!.isNotEmpty && imageUrl!.contains('http')
             ? Image.network(
                 imageUrl!,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: bgColor.withOpacity(0.1),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                            : null,
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(bgColor),
+                      ),
+                    ),
+                  );
+                },
                 errorBuilder: (context, error, stackTrace) {
+                  print('🖼️ Avatar image load error: $error');
                   return _buildTextAvatar(name ?? "A", bgColor, txtColor);
                 },
               )
@@ -138,11 +154,27 @@ class SmallAvatarWidget extends StatelessWidget {
         color: bgColor.withOpacity(0.1),
       ),
       child: ClipOval(
-        child: imageUrl != null && imageUrl!.isNotEmpty
+        child: imageUrl != null && imageUrl!.isNotEmpty && imageUrl!.contains('http')
             ? Image.network(
                 imageUrl!,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: bgColor.withOpacity(0.1),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                            : null,
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(bgColor),
+                      ),
+                    ),
+                  );
+                },
                 errorBuilder: (context, error, stackTrace) {
+                  print('🖼️ Avatar image load error: $error');
                   return _buildTextAvatar(name ?? "A", bgColor, txtColor);
                 },
               )

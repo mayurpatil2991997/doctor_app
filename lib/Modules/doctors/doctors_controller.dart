@@ -55,6 +55,16 @@ class DoctorsController extends GetxController {
             print('Response is already a Map, parsing directly');
             var result = DoctorModel.fromJson(responseData);
             if (result.doctorDetails != null && result.doctorDetails!.isNotEmpty) {
+              // Clean problematic image URLs
+              for (var doctor in result.doctorDetails!) {
+                if (doctor.profileImageUrl != null && 
+                    (doctor.profileImageUrl!.contains('cloudflarestorage.com') || 
+                     !doctor.profileImageUrl!.contains('http'))) {
+                  print('🚫 Cleaning problematic doctor image URL: ${doctor.profileImageUrl}');
+                  doctor.profileImageUrl = null;
+                }
+              }
+              
               doctorsList.value = result.doctorDetails!;
               hasError.value = false;
               _filterDoctors(); // Apply current filters

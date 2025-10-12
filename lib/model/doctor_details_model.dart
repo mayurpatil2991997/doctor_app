@@ -548,6 +548,7 @@ class TimeSlot {
   bool? isBooked;
   bool? isSelected;
   String? date;
+  String? slotId;
 
   TimeSlot({
     this.time,
@@ -555,6 +556,7 @@ class TimeSlot {
     this.isBooked,
     this.isSelected,
     this.date,
+    this.slotId,
   });
 
   TimeSlot.fromJson(Map<String, dynamic> json) {
@@ -563,6 +565,7 @@ class TimeSlot {
     isBooked = json['isBooked'];
     isSelected = json['isSelected'];
     date = json['date'];
+    slotId = json['slotId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -572,6 +575,7 @@ class TimeSlot {
     data['isBooked'] = this.isBooked;
     data['isSelected'] = this.isSelected;
     data['date'] = this.date;
+    data['slotId'] = this.slotId;
     return data;
   }
 }

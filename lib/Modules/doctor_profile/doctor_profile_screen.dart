@@ -263,16 +263,35 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   child: ClipOval(
                     child:
                         doctor.profileImageUrl != null &&
-                                doctor.profileImageUrl!.isNotEmpty
+                                doctor.profileImageUrl!.isNotEmpty &&
+                                doctor.profileImageUrl!.contains('http')
                             ? Image.network(
                               doctor.profileImageUrl!,
-                              fit: BoxFit.cover,
-                              width: 100,
-                              height: 100,
-                              errorBuilder: (context, error, stackTrace) {
-                                return _buildFallbackDoctorAvatar(doctor);
-                              },
-                            )
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                width: 100,
+                                height: 100,
+                                color: AppColor.greyColor.withOpacity(0.1),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                                  ),
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              print('🖼️ Doctor profile image load error: $error');
+                              return _buildFallbackDoctorAvatar(doctor);
+                            },
+                          )
                             : _buildFallbackDoctorAvatar(doctor),
                   ),
                 ),
@@ -862,7 +881,12 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
           ),
 
           SizedBox(height: 2.h),
-
+          
+          // Notes Section
+          notesSection(),
+          
+          SizedBox(height: 2.h),
+          
           // Individual Reviews
           ...(doctor.reviews ?? [])
               .map((review) => reviewCard(review))
@@ -1043,6 +1067,91 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     int total = doctor.doctorRating.totalReviews;
     
     return count / total;
+  }
+
+  Widget notesSection() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 3.w),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColor.whiteColor,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 3,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.note_alt_outlined,
+                color: AppColor.primaryColor,
+                size: 20,
+              ),
+              SizedBox(width: 8),
+              Text(
+                "Notes",
+                style: AppTextStyle.boldText.copyWith(
+                  color: AppColor.blackColor,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: Colors.grey.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: TextField(
+              controller: controller.notesController,
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: "Add your notes about the doctor...",
+                hintStyle: AppTextStyle.mediumText.copyWith(
+                  color: AppColor.greyColor,
+                  fontSize: 14,
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(16),
+              ),
+              style: AppTextStyle.mediumText.copyWith(
+                color: AppColor.blackColor,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => controller.clearNotes(),
+                child: Text(
+                  "Clear",
+                  style: AppTextStyle.mediumText.copyWith(
+                    color: Colors.grey.shade600,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget bookAppointmentButton() {

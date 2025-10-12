@@ -277,12 +277,32 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                         shape: BoxShape.circle,
                         color: AppColor.primaryColor.withOpacity(0.1),
                       ),
-                      child: doctor.profileImageUrl != null && doctor.profileImageUrl!.isNotEmpty
+                      child: doctor.profileImageUrl != null && 
+                              doctor.profileImageUrl!.isNotEmpty &&
+                              doctor.profileImageUrl!.contains('http')
                           ? ClipOval(
                               child: Image.network(
                                 doctor.profileImageUrl!,
                                 fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: AppColor.primaryColor.withOpacity(0.1),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                            : null,
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                                      ),
+                                    ),
+                                  );
+                                },
                                 errorBuilder: (context, error, stackTrace) {
+                                  print('🖼️ Doctor list image load error: $error');
                                   return _buildDoctorAvatar(doctor);
                                 },
                               ),
