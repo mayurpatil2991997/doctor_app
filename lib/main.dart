@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
               child: child!,
             );
           },
-          initialRoute: AppRoutes.splash,
+          initialRoute: AppRoutes.mainNavigation,
           getPages: AppPages.pages,
         );
       },

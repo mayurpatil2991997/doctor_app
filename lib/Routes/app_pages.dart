@@ -1,7 +1,5 @@
 import 'package:doctor_app/Modules/intro/intro_screen.dart';
 import 'package:get/get.dart';
-import '../Modules/splash/splash_binding.dart';
-import '../Modules/splash/splash_screen.dart';
 
 import '../Modules/blogs/blogs_binding.dart';
 import '../Modules/blogs/blogs_screen.dart';
@@ -50,11 +48,6 @@ import 'app_routes.dart';
 
 class AppPages {
   static final List<GetPage> pages = [
-    GetPage(
-      name: AppRoutes.splash,
-      page: () => SplashScreen(),
-      binding: SplashBinding(),
-    ),
     GetPage(
       name: AppRoutes.intro,
       page: () => IntroScreen(),
