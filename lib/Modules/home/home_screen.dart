@@ -298,8 +298,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return GestureDetector(
               onTap: () {
-                // Navigate to patient_home when doctor card is tapped
-                Get.toNamed('/patient-home');
+                // Navigate to doctor_home when doctor card is tapped
+                Get.toNamed('/doctor-home');
               },
               child: Container(
                 width: 52.w,

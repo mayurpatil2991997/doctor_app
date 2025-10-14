@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class PatientHomeModel {
-  String? patientName;
-  String? patientType;
+class DoctorHomeModel {
+  String? doctorName;
+  String? doctorType;
   String? hospitalName;
   String? hospitalAddress;
-  String? doctorName;
-  String? doctorSpecialization;
-  String? doctorImage;
+  String? patientName;
+  String? patientSpecialization;
+  String? patientImage;
   String? roomNumber;
   String? wing;
   String? appointmentTitle;
@@ -20,14 +20,14 @@ class PatientHomeModel {
   String? bloodPressure;
   String? bloodPressureUnit;
 
-  PatientHomeModel({
-    this.patientName,
-    this.patientType,
+  DoctorHomeModel({
+    this.doctorName,
+    this.doctorType,
     this.hospitalName,
     this.hospitalAddress,
-    this.doctorName,
-    this.doctorSpecialization,
-    this.doctorImage,
+    this.patientName,
+    this.patientSpecialization,
+    this.patientImage,
     this.roomNumber,
     this.wing,
     this.appointmentTitle,
@@ -41,15 +41,15 @@ class PatientHomeModel {
     this.bloodPressureUnit,
   });
 
-  factory PatientHomeModel.fromJson(Map<String, dynamic> json) {
-    return PatientHomeModel(
-      patientName: json['patientName'],
-      patientType: json['patientType'],
+  factory DoctorHomeModel.fromJson(Map<String, dynamic> json) {
+    return DoctorHomeModel(
+      doctorName: json['doctorName'],
+      doctorType: json['doctorType'],
       hospitalName: json['hospitalName'],
       hospitalAddress: json['hospitalAddress'],
-      doctorName: json['doctorName'],
-      doctorSpecialization: json['doctorSpecialization'],
-      doctorImage: json['doctorImage'],
+      patientName: json['patientName'],
+      patientSpecialization: json['patientSpecialization'],
+      patientImage: json['patientImage'],
       roomNumber: json['roomNumber'],
       wing: json['wing'],
       appointmentTitle: json['appointmentTitle'],
@@ -66,13 +66,13 @@ class PatientHomeModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'patientName': patientName,
-      'patientType': patientType,
+      'doctorName': doctorName,
+      'doctorType': doctorType,
       'hospitalName': hospitalName,
       'hospitalAddress': hospitalAddress,
-      'doctorName': doctorName,
-      'doctorSpecialization': doctorSpecialization,
-      'doctorImage': doctorImage,
+      'patientName': patientName,
+      'patientSpecialization': patientSpecialization,
+      'patientImage': patientImage,
       'roomNumber': roomNumber,
       'wing': wing,
       'appointmentTitle': appointmentTitle,

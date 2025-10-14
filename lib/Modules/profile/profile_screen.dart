@@ -205,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: Icons.help_outline,
             title: "Help & Support",
             onTap: () {
-              Get.toNamed('/patient-home');
+              Get.toNamed('/doctor-home');
             },
           ),
           

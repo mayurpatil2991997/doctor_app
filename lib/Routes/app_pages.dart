@@ -16,14 +16,18 @@ import '../Modules/profile/profile_binding.dart';
 import '../Modules/profile/profile_screen.dart';
 import '../Modules/personal_details/personal_details_binding.dart';
 import '../Modules/personal_details/personal_details_screen.dart';
+import '../Modules/rehab/rehab_binding.dart';
+import '../Modules/rehab/rehab_screen.dart';
+import '../Modules/reports/reports_binding.dart';
+import '../Modules/reports/reports_screen.dart';
 import '../Modules/themes/themes_binding.dart';
 import '../Modules/themes/themes_screen.dart';
 import '../Modules/family/family_binding.dart';
 import '../Modules/family/family_screen.dart';
 import '../Modules/ipd_services/ipd_services_binding.dart';
 import '../Modules/ipd_services/ipd_services_screen.dart';
-import '../Modules/patient_home/patient_home_binding.dart';
-import '../Modules/patient_home/patient_home_screen.dart';
+import '../Modules/doctor_home/doctor_home_binding.dart';
+import '../Modules/doctor_home/doctor_home_screen.dart';
 import '../Modules/exercise/exercise_binding.dart';
 import '../Modules/exercise/exercise_screen.dart';
 import '../Modules/diet/diet_binding.dart';
@@ -115,9 +119,9 @@ class AppPages {
       binding: IpdServicesBinding(),
     ),
     GetPage(
-      name: AppRoutes.patientHome,
-      page: () => PatientHomeScreen(),
-      binding: PatientHomeBinding(),
+      name: AppRoutes.doctorHome,
+      page: () => DoctorHomeScreen(),
+      binding: DoctorHomeBinding(),
     ),
     GetPage(
       name: AppRoutes.exercise,
@@ -144,6 +148,16 @@ class AppPages {
       name: AppRoutes.fitnessAssessment,
       page: () => FitnessAssessmentScreen(),
       binding: FitnessAssessmentBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.rehab,
+      page: () => RehabScreen(),
+      binding: RehabBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.reports,
+      page: () => ReportsScreen(),
+      binding: ReportsBinding(),
     ),
     GetPage(
       name: AppRoutes.dietDetail,

@@ -8,15 +8,15 @@ import '../../constants/app_const_assets.dart';
 import '../../widgets/common_card_widget.dart';
 import '../../widgets/common_avatar_widget.dart';
 import '../../widgets/common_button_widget.dart';
-import 'patient_home_controller.dart';
+import 'doctor_home_controller.dart';
 
-class PatientHomeScreen extends StatefulWidget {
+class DoctorHomeScreen extends StatefulWidget {
   @override
-  State<PatientHomeScreen> createState() => _PatientHomeScreenState();
+  State<DoctorHomeScreen> createState() => _DoctorHomeScreenState();
 }
 
-class _PatientHomeScreenState extends State<PatientHomeScreen> {
-  final PatientHomeController controller = Get.put(PatientHomeController());
+class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
+  final DoctorHomeController controller = Get.put(DoctorHomeController());
 
   @override
   void initState() {
@@ -27,20 +27,20 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.bgColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Header Section
-              _buildHeader(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(12.h),
+        child: _buildHeader(),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 2.h),
+            // Hospital Information Card
+            _buildHospitalCard(),
               SizedBox(height: 2.h),
               
-              // Hospital Information Card
-              _buildHospitalCard(),
-              SizedBox(height: 2.h),
-              
-              // Doctor Information Card
-              _buildDoctorCard(),
+              // Patient Information Card
+              _buildPatientCard(),
               SizedBox(height: 2.h),
               
               // Admitted Patient Status Card
@@ -65,66 +65,135 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             ],
           ),
         ),
-      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
   Widget _buildHeader() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColor.primaryColor,
+            AppColor.primaryColor.withOpacity(0.9),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.primaryColor.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                radius: 3.h,
-                backgroundImage: AssetImage("assets/images/doctor.png"),
-              ),
-              SizedBox(width: 3.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // Top Row - User Profile and Name with Location
+              Row(
                 children: [
-                  Text(
-                    "Welcome back,",
-                    style: AppTextStyle.mediumText.copyWith(
-                      fontSize: 14,
-                      color: AppColor.greyColor,
+                  // User Profile Avatar
+                  Container(
+                    width: 9.w,
+                    height: 9.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColor.whiteColor.withOpacity(0.2),
+                      border: Border.all(
+                        color: AppColor.whiteColor.withOpacity(0.3),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "D",
+                        style: AppTextStyle.boldText.copyWith(
+                          color: AppColor.whiteColor,
+                          fontSize: 12.sp,
+                        ),
+                      ),
                     ),
                   ),
-                  Text(
-                    "Patient",
-                    style: AppTextStyle.boldText.copyWith(
-                      fontSize: 18,
-                      color: AppColor.blackColor,
+                  SizedBox(width: 3.w),
+                  // User Name and Location
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Welcome back, Doctor",
+                          style: AppTextStyle.boldText.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.whiteColor,
+                          ),
+                        ),
+                        SizedBox(height: 0.1.h),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on_rounded,
+                              color: AppColor.whiteColor.withOpacity(0.8),
+                              size: 10.sp,
+                            ),
+                            SizedBox(width: 1.w),
+                            Expanded(
+                              child: Text(
+                                "City General Hospital",
+                                style: AppTextStyle.mediumText.copyWith(
+                                  fontSize: 10.sp,
+                                  color: AppColor.whiteColor.withOpacity(0.8),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
+                  ),
+                  // Notification Icon with Badge
+                  Stack(
+                    children: [
+                      Container(
+                        width: 5.w,
+                        height: 5.w,
+                        child: SvgPicture.asset(
+                          AppAssets.notification,
+                          color: AppColor.whiteColor,
+                          width: 10,
+                          height: 10,
+                        ),
+                      ),
+                      // Notification Badge
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColor.whiteColor,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-          Stack(
-            children: [
-              SvgPicture.asset(
-                AppAssets.notification,
-                height: 6.w,
-                width: 6.w,
-              ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  width: 2.w,
-                  height: 2.w,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -132,8 +201,8 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
 
   Widget _buildHospitalCard() {
     return CommonCardWidget(
-      margin: EdgeInsets.symmetric(horizontal: 2.w),
-      padding: EdgeInsets.all(2.w),
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
+      padding: EdgeInsets.all(4.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -145,27 +214,38 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             ),
           ),
           SizedBox(height: 1.h),
-          Text(
-            "City General Hospital",
-            style: AppTextStyle.boldText.copyWith(
-              fontSize: 18,
-              color: AppColor.blackColor,
-            ),
-          ),
-          SizedBox(height: 0.5.h),
-          Text(
-            "123 Medical Drive, Anytown",
-            style: AppTextStyle.mediumText.copyWith(
-              fontSize: 14,
-              color: AppColor.greyColor,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "City General Hospital",
+                      style: AppTextStyle.boldText.copyWith(
+                        fontSize: 18,
+                        color: AppColor.blackColor,
+                      ),
+                    ),
+                    SizedBox(height: 0.5.h),
+                    Text(
+                      "123 Medical Drive, Anytown",
+                      style: AppTextStyle.mediumText.copyWith(
+                        fontSize: 14,
+                        color: AppColor.greyColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDoctorCard() {
+  Widget _buildPatientCard() {
     return CommonCardWidget(
       margin: EdgeInsets.symmetric(horizontal: 4.w),
       padding: EdgeInsets.all(4.w),
@@ -173,7 +253,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "YOUR DOCTOR",
+            "YOUR PATIENT",
             style: AppTextStyle.mediumText.copyWith(
               fontSize: 12,
               color: AppColor.primaryColor,
@@ -215,7 +295,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: controller.onCallDoctor,
+                  onPressed: controller.onCallPatient,
                   icon: Icon(Icons.phone, size: 18),
                   label: Text("Call"),
                   style: ElevatedButton.styleFrom(
@@ -231,7 +311,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
               SizedBox(width: 2.w),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: controller.onMessageDoctor,
+                  onPressed: controller.onMessagePatient,
                   icon: Icon(Icons.message, size: 18),
                   label: Text("Message"),
                   style: ElevatedButton.styleFrom(
@@ -425,58 +505,119 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
             ),
           ),
           SizedBox(height: 1.h),
-          Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: controller.featureServices.map((service) {
-              return Expanded(
-                  child: GestureDetector(
-                    onTap: () => controller.onFeatureServiceTap(service.title!),
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 1.w),
-                      padding: EdgeInsets.all(4.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: service.color!.withOpacity(0.3),
-                          width: 2,
+          Obx(() => Column(
+            children: [
+              // First row - 3 items
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: controller.featureServices.take(3).map((service) {
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => controller.onFeatureServiceTap(service.title!),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
+                        padding: EdgeInsets.all(3.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: service.color!.withOpacity(0.3),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(2.w),
-                            decoration: BoxDecoration(
-                              color: service.color!.withOpacity(0.1),
-                              shape: BoxShape.circle,
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(2.w),
+                              decoration: BoxDecoration(
+                                color: service.color!.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                service.icon,
+                                color: service.color,
+                                size: 20,
+                              ),
                             ),
-                            child: Icon(
-                              service.icon,
-                              color: service.color,
-                              size: 24,
+                            SizedBox(height: 0.8.h),
+                            Text(
+                              service.title!,
+                              style: AppTextStyle.mediumText.copyWith(
+                                fontSize: 12,
+                                color: AppColor.blackColor,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          SizedBox(height: 1.h),
-                          Text(
-                            service.title!,
-                            style: AppTextStyle.mediumText.copyWith(
-                              fontSize: 14,
-                              color: AppColor.blackColor,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              );
-            }).toList(),
+                  );
+                }).toList(),
+              ),
+              // Second row - 3 items
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: controller.featureServices.skip(3).take(3).map((service) {
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => controller.onFeatureServiceTap(service.title!),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
+                        padding: EdgeInsets.all(3.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: service.color!.withOpacity(0.3),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(2.w),
+                              decoration: BoxDecoration(
+                                color: service.color!.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                service.icon,
+                                color: service.color,
+                                size: 20,
+                              ),
+                            ),
+                            SizedBox(height: 0.8.h),
+                            Text(
+                              service.title!,
+                              style: AppTextStyle.mediumText.copyWith(
+                                fontSize: 12,
+                                color: AppColor.blackColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
           )),
         ],
       ),
@@ -667,6 +808,65 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Obx(() => BottomNavigationBar(
+        currentIndex: controller.selectedBottomNavIndex.value,
+        onTap: controller.onBottomNavTap,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: AppColor.primaryColor,
+        unselectedItemColor: Colors.grey[600],
+        selectedLabelStyle: AppTextStyle.mediumText.copyWith(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: AppTextStyle.mediumText.copyWith(
+          fontSize: 12,
+        ),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              controller.selectedBottomNavIndex.value == 0 
+                ? Icons.home 
+                : Icons.home_outlined,
+              size: 24,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              controller.selectedBottomNavIndex.value == 1 
+                ? Icons.medication 
+                : Icons.medication_outlined,
+              size: 24,
+            ),
+            label: 'Prescription',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              controller.selectedBottomNavIndex.value == 2 
+                ? Icons.connect_without_contact 
+                : Icons.connect_without_contact_outlined,
+              size: 24,
+            ),
+            label: 'Connect',
+          ),
+        ],
+      )),
     );
   }
 }

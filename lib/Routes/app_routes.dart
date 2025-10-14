@@ -13,10 +13,12 @@ class AppRoutes {
   static const themes = '/themes';
   static const family = '/family';
   static const ipdServices = '/ipd-services';
-  static const patientHome = '/patient-home';
+  static const doctorHome = '/doctor-home';
   static const exercise = '/exercise';
   static const exerciseSession = '/exercise-session';
   static const diet = '/diet';
   static const dietDetail = '/diet-detail';
   static const fitnessAssessment = '/fitness-assessment';
+  static const reports = '/reports';
+  static const rehab = '/rehab';
 }

@@ -128,7 +128,7 @@ The following screens have been refactored to use these common widgets:
    - Uses `CircularIconWidget` for exercise icons
    - Uses `CompactCardWidget` for exercise items
 
-2. **Patient Home Screen** (`lib/Modules/patient_home/patient_home_screen.dart`)
+2. **Doctor Home Screen** (`lib/Modules/doctor_home/doctor_home_screen.dart`)
    - Uses `CommonCardWidget` for hospital and doctor cards
 
 3. **Diet Screen** (`lib/Modules/diet/diet_screen.dart`)
