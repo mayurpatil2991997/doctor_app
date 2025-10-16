@@ -14,6 +14,6 @@ class SplashController extends GetxController {
     await Future.delayed(Duration(seconds: 3));
     
     // Navigate to main navigation screen
-    Get.offAllNamed(AppRoutes.mainNavigation);
+    Get.offAllNamed(AppRoutes.login);
   }
 }
