@@ -108,19 +108,8 @@ class ReportsScreen extends StatelessWidget {
       elevation: 0,
       shadowColor: Colors.black.withOpacity(0.1),
       leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios, color: Colors.black87),
         onPressed: () => Get.back(),
-        icon: Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black87,
-            size: 16,
-          ),
-        ),
       ),
       title: Text(
         'Reports',

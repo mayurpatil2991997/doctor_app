@@ -29,28 +29,16 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       appBar: AppBar(
         backgroundColor: Color(0xFFF5F5F5),
         elevation: 0,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(
-              Icons.person_outline,
-              color: AppColor.blackColor,
-              size: 24,
-            ),
-            Text(
-              'Home',
-              style: AppTextStyle.boldText.copyWith(
-                color: AppColor.blackColor,
-                fontSize: 20,
-              ),
-            ),
-            Icon(
-              Icons.notifications_outlined,
-              color: AppColor.blackColor,
-              size: 24,
-            ),
-          ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.blackColor),
+          onPressed: () => Get.back(),
+        ),
+        title: Text(
+          'Exercise',
+          style: AppTextStyle.boldText.copyWith(
+            color: AppColor.blackColor,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
       ),

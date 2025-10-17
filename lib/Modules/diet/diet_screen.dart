@@ -34,12 +34,6 @@ class _DietScreenState extends State<DietScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Obx(() {
         if (controller.isLoading.value) {

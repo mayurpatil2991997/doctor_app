@@ -81,23 +81,6 @@ class DoctorHomeController extends GetxController {
     ];
   }
 
-  void onCallPatient() {
-    // Handle call patient action
-    Get.snackbar(
-      "Call Patient",
-      "Calling ${doctorData.value.patientName}...",
-      snackPosition: SnackPosition.BOTTOM,
-    );
-  }
-
-  void onMessagePatient() {
-    // Handle message patient action
-    Get.snackbar(
-      "Message Patient",
-      "Opening chat with ${doctorData.value.patientName}...",
-      snackPosition: SnackPosition.BOTTOM,
-    );
-  }
 
   void onViewDetails() {
     // Handle view details action
@@ -161,103 +144,10 @@ class DoctorHomeController extends GetxController {
         Get.toNamed('/medicines');
         break;
       case 2:
-        // Connect - open chat/video call options
-        _showConnectOptions();
+        // Connect - navigate to connect screen
+        Get.toNamed('/connect');
         break;
     }
   }
 
-  void _showConnectOptions() {
-    Get.bottomSheet(
-      Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "Connect with Patient",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildConnectOption(
-                  icon: Icons.chat,
-                  title: "Chat",
-                  onTap: () {
-                    Get.back();
-                    Get.snackbar(
-                      "Chat",
-                      "Opening chat with patient...",
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                  },
-                ),
-                _buildConnectOption(
-                  icon: Icons.videocam,
-                  title: "Video Call",
-                  onTap: () {
-                    Get.back();
-                    Get.snackbar(
-                      "Video Call",
-                      "Starting video call with patient...",
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                  },
-                ),
-                _buildConnectOption(
-                  icon: Icons.phone,
-                  title: "Voice Call",
-                  onTap: () {
-                    Get.back();
-                    Get.snackbar(
-                      "Voice Call",
-                      "Starting voice call with patient...",
-                      snackPosition: SnackPosition.BOTTOM,
-                    );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildConnectOption({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 32, color: Colors.blue),
-            SizedBox(height: 8),
-            Text(title),
-          ],
-        ),
-      ),
-    );
-  }
 }

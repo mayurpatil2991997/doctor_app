@@ -21,7 +21,10 @@ class _BlogsScreenState extends State<BlogsScreen> {
       appBar: AppBar(
         backgroundColor: AppColor.whiteColor,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.blackColor),
+          onPressed: () => Get.back(),
+        ),
         title: Text(
           'Health Articles',
           style: AppTextStyle.boldText.copyWith(

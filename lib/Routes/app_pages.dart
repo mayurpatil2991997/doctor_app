@@ -46,6 +46,8 @@ import '../Modules/main_navigation/main_navigation_binding.dart';
 import '../Modules/main_navigation/main_navigation_screen.dart';
 import '../Modules/register/register_binding.dart';
 import '../Modules/register/register_screen.dart';
+import '../Modules/connect/connect_binding.dart';
+import '../Modules/connect/connect_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -169,6 +171,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.dietDetail,
       page: () => DietDetailScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.connect,
+      page: () => ConnectScreen(),
+      binding: ConnectBinding(),
     ),
   ];
 }

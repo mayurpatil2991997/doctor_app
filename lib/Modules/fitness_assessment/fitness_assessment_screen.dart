@@ -23,14 +23,7 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
         elevation: 0,
         shadowColor: Colors.black.withOpacity(0.1),
         leading: IconButton(
-          icon: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(Icons.arrow_back_ios, color: AppColor.primaryColor, size: 18),
-          ),
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.primaryColor),
           onPressed: () => Get.back(),
         ),
         title: Text(
@@ -42,21 +35,6 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 16),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              Icons.notifications_outlined,
-              color: AppColor.primaryColor,
-              size: 20,
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [

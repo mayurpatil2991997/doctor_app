@@ -30,6 +30,10 @@ class RehabScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       elevation: 0,
       shadowColor: Colors.black.withOpacity(0.06),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios, color: Colors.black87),
+        onPressed: () => Get.back(),
+      ),
       title: Text(
         'Rehab',
         style: AppTextStyle.boldText.copyWith(

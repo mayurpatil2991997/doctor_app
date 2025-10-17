@@ -33,12 +33,6 @@ class _IpdServicesScreenState extends State<IpdServicesScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_outlined, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Obx(() {
         if (controller.ipdData.value == null) {

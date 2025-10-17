@@ -39,10 +39,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             _buildHospitalCard(),
               SizedBox(height: 2.h),
               
-              // Patient Information Card
-              _buildPatientCard(),
-              SizedBox(height: 2.h),
-              
               // Admitted Patient Status Card
               _buildAdmittedPatientCard(),
               SizedBox(height: 2.h),
@@ -245,91 +241,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     );
   }
 
-  Widget _buildPatientCard() {
-    return CommonCardWidget(
-      margin: EdgeInsets.symmetric(horizontal: 4.w),
-      padding: EdgeInsets.all(4.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "YOUR PATIENT",
-            style: AppTextStyle.mediumText.copyWith(
-              fontSize: 12,
-              color: AppColor.primaryColor,
-            ),
-          ),
-          SizedBox(height: 1.h),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Dr. Amelia Harper",
-                      style: AppTextStyle.boldText.copyWith(
-                        fontSize: 18,
-                        color: AppColor.blackColor,
-                      ),
-                    ),
-                    SizedBox(height: 0.5.h),
-                    Text(
-                      "Physiotherapist",
-                      style: AppTextStyle.mediumText.copyWith(
-                        fontSize: 14,
-                        color: AppColor.greyColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              CircleAvatar(
-                radius: 4.h,
-                backgroundImage: AssetImage("assets/images/doctor.png"),
-              ),
-            ],
-          ),
-          SizedBox(height: 2.h),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: controller.onCallPatient,
-                  icon: Icon(Icons.phone, size: 18),
-                  label: Text("Call"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.primaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 1.h),
-                  ),
-                ),
-              ),
-              SizedBox(width: 2.w),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: controller.onMessagePatient,
-                  icon: Icon(Icons.message, size: 18),
-                  label: Text("Message"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: AppColor.blackColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 1.h),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildAdmittedPatientCard() {
     return Container(

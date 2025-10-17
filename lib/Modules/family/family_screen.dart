@@ -33,14 +33,6 @@ class _FamilyScreenState extends State<FamilyScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Obx(() => familyController.hasFamilyMembers
-              ? IconButton(
-                  icon: Icon(Icons.info_outline, color: AppColor.blackColor),
-                  onPressed: () => _showSharedInformationPopup(),
-                )
-              : SizedBox.shrink()),
-        ],
       ),
       body: Obx(() {
         if (familyController.hasFamilyMembers) {

@@ -22,4 +22,5 @@ class AppRoutes {
   static const fitnessAssessment = '/fitness-assessment';
   static const reports = '/reports';
   static const rehab = '/rehab';
+  static const connect = '/connect';
 }

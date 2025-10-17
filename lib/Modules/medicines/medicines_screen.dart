@@ -33,12 +33,6 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_outlined, color: AppColor.blackColor),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Column(
         children: [
