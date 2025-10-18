@@ -5,6 +5,8 @@ import '../../Themes/app_colors_theme.dart';
 import '../../Themes/app_text_theme.dart';
 import '../../widgets/common_card_widget.dart';
 import '../../widgets/common_button_widget.dart';
+import '../../widgets/doctor_bottom_navigation_widget.dart';
+import '../../Modules/doctor_main_navigation/doctor_main_navigation_controller.dart';
 import 'connect_controller.dart';
 
 class ConnectScreen extends StatefulWidget {
@@ -14,11 +16,14 @@ class ConnectScreen extends StatefulWidget {
 
 class _ConnectScreenState extends State<ConnectScreen> with TickerProviderStateMixin {
   final ConnectController controller = Get.put(ConnectController());
+  final DoctorMainNavigationController navController = Get.find<DoctorMainNavigationController>();
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    // Set current index to connect (index 2)
+    navController.setCurrentIndex(2);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       controller.onTabChanged(_tabController.index);
@@ -62,6 +67,10 @@ class _ConnectScreenState extends State<ConnectScreen> with TickerProviderStateM
           ],
         ),
       ),
+      bottomNavigationBar: Obx(() => DoctorBottomNavigationWidget(
+        currentIndex: navController.selectedBottomNavIndex.value,
+        onTap: navController.onBottomNavTap,
+      )),
     );
   }
 

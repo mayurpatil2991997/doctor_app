@@ -8,6 +8,8 @@ import '../../constants/app_const_assets.dart';
 import '../../widgets/common_card_widget.dart';
 import '../../widgets/common_avatar_widget.dart';
 import '../../widgets/common_button_widget.dart';
+import '../../widgets/doctor_bottom_navigation_widget.dart';
+import '../../Modules/doctor_main_navigation/doctor_main_navigation_controller.dart';
 import 'doctor_home_controller.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
@@ -17,10 +19,13 @@ class DoctorHomeScreen extends StatefulWidget {
 
 class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   final DoctorHomeController controller = Get.put(DoctorHomeController());
+  final DoctorMainNavigationController navController = Get.find<DoctorMainNavigationController>();
 
   @override
   void initState() {
     super.initState();
+    // Set current index to home (index 0)
+    navController.setCurrentIndex(0);
   }
 
   @override
@@ -61,7 +66,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             ],
           ),
         ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: Obx(() => DoctorBottomNavigationWidget(
+        currentIndex: navController.selectedBottomNavIndex.value,
+        onTap: navController.onBottomNavTap,
+      )),
     );
   }
 
@@ -722,62 +730,4 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Obx(() => BottomNavigationBar(
-        currentIndex: controller.selectedBottomNavIndex.value,
-        onTap: controller.onBottomNavTap,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: AppColor.primaryColor,
-        unselectedItemColor: Colors.grey[600],
-        selectedLabelStyle: AppTextStyle.mediumText.copyWith(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: AppTextStyle.mediumText.copyWith(
-          fontSize: 12,
-        ),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              controller.selectedBottomNavIndex.value == 0 
-                ? Icons.home 
-                : Icons.home_outlined,
-              size: 24,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              controller.selectedBottomNavIndex.value == 1 
-                ? Icons.medication 
-                : Icons.medication_outlined,
-              size: 24,
-            ),
-            label: 'Prescription',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              controller.selectedBottomNavIndex.value == 2 
-                ? Icons.connect_without_contact 
-                : Icons.connect_without_contact_outlined,
-              size: 24,
-            ),
-            label: 'Connect',
-          ),
-        ],
-      )),
-    );
-  }
 }

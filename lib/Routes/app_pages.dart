@@ -48,6 +48,9 @@ import '../Modules/register/register_binding.dart';
 import '../Modules/register/register_screen.dart';
 import '../Modules/connect/connect_binding.dart';
 import '../Modules/connect/connect_screen.dart';
+import '../Modules/doctor_prescription/doctor_prescription_binding.dart';
+import '../Modules/doctor_prescription/doctor_prescription_screen.dart';
+import '../Modules/doctor_main_navigation/doctor_main_navigation_controller.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -176,6 +179,11 @@ class AppPages {
       name: AppRoutes.connect,
       page: () => ConnectScreen(),
       binding: ConnectBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.doctorPrescription,
+      page: () => DoctorPrescriptionScreen(),
+      binding: DoctorPrescriptionBinding(),
     ),
   ];
 }

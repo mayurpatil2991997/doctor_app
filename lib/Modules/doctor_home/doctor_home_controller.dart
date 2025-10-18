@@ -8,7 +8,6 @@ class DoctorHomeController extends GetxController {
   var errorMessage = ''.obs;
   var doctorData = DoctorHomeModel().obs;
   var featureServices = <FeatureService>[].obs;
-  var selectedBottomNavIndex = 0.obs;
 
   @override
   void onInit() {
@@ -133,21 +132,5 @@ class DoctorHomeController extends GetxController {
     }
   }
 
-  void onBottomNavTap(int index) {
-    selectedBottomNavIndex.value = index;
-    switch (index) {
-      case 0:
-        // Home - already on home screen
-        break;
-      case 1:
-        // Prescription - navigate to medicines/prescription screen
-        Get.toNamed('/medicines');
-        break;
-      case 2:
-        // Connect - navigate to connect screen
-        Get.toNamed('/connect');
-        break;
-    }
-  }
 
 }

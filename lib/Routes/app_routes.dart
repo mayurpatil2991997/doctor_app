@@ -23,4 +23,5 @@ class AppRoutes {
   static const reports = '/reports';
   static const rehab = '/rehab';
   static const connect = '/connect';
+  static const doctorPrescription = '/doctor-prescription';
 }
